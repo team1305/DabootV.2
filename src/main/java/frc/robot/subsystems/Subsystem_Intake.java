@@ -42,6 +42,7 @@ private final static Solenoid slndIntake1 = Constants.slndIntake1;
   }
   public void setIntake(double speed) {
     //mtIntake.set(ControlMode.PercentOutput, speed);
+    mtIntake.set(0.6);
     slndIntake1.set(true);  //added bjk at FLL
     //slndIntake2.set(true);  //added bjk at FLL
     bintakeOn = true;
@@ -51,6 +52,7 @@ private final static Solenoid slndIntake1 = Constants.slndIntake1;
 
   public void stopIntake() {
     //mtIntake.set(ControlMode.PercentOutput, 0);
+    mtIntake.set(0);
     slndIntake1.set(false);  //added bjk at fll
     //slndIntake2.set(false);  //added bjk at fll
     SmartDashboard.putBoolean("Intake Solenoid Set Value", false);

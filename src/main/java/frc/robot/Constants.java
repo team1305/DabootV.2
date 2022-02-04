@@ -34,7 +34,7 @@ public final class Constants {
 
 
 	 //motor ID for intake
-	public static WPI_TalonFX mtIntake = new WPI_TalonFX(1287362); //set the motor to the right ID
+	public static WPI_TalonFX mtIntake = new WPI_TalonFX(15); //set the motor to the right ID
 	
 	 //solenoids for Intake
 	 public static Solenoid slndIntake1 =  new Solenoid(PneumaticsModuleType.CTREPCM, 4); //set the solenoid to right ID, and add the moduler type
