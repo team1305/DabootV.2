@@ -6,15 +6,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Subsystem_Compressor_Power;
+import frc.robot.subsystems.Subsystem_Compressor;
 
 public class Command_Compressor_Off extends CommandBase {
   /** Creates a new Command_Compressor_Off. */
 
-  private final Subsystem_Compressor_Power compressorSub;
+  private final Subsystem_Compressor compressorSub;
 
   
-  public Command_Compressor_Off(Subsystem_Compressor_Power compressor) {
+  public Command_Compressor_Off(Subsystem_Compressor compressor) {
     // Use addRequirements() here to declare subsystem dependencies.
     compressorSub = compressor;
     addRequirements(compressorSub);
@@ -23,12 +23,14 @@ public class Command_Compressor_Off extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    RobotContainer.compressor.CompressorOFF();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.compressor.CompressorOFF();
+ 
   }
 
   // Called once the command ends or is interrupted.

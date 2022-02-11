@@ -19,7 +19,7 @@ public class Subsystem_Intake extends SubsystemBase {
 
   private final static WPI_TalonFX mtIntake = Constants.mtIntake;
 
-private final static Solenoid slndIntake1 = Constants.slndIntake1;
+private final static Solenoid slndIntake1 = Constants.slndIntake;
 //private final static Solenoid slndIntake2 = Constants.slndIntake2;
   public boolean bintakeOn;
 
@@ -32,7 +32,7 @@ private final static Solenoid slndIntake1 = Constants.slndIntake1;
 
    SmartDashboard.putBoolean("Intake Solenoid Set Value", false);
    bintakeOn = false;
-
+   //intakeExtension(false);
 
   }
 
@@ -40,43 +40,39 @@ private final static Solenoid slndIntake1 = Constants.slndIntake1;
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
   public void setIntake(double speed) {
     //mtIntake.set(ControlMode.PercentOutput, speed);
-    mtIntake.set(0.6);
-    slndIntake1.set(true);  //added bjk at FLL
-    //slndIntake2.set(true);  //added bjk at FLL
-    bintakeOn = true;
-    SmartDashboard.putBoolean("Intake Solenoid Set Value", true);
+    mtIntake.set(speed);
+    //slndIntake1.set(true);  //added bjk at FLL
+    //SmartDashboard.putString("Intake Audit", "setIntake");
+    //bintakeOn = true;
+    //SmartDashboard.putBoolean("Intake Solenoid Set Value", true);
   }
 
 
   public void stopIntake() {
-    //mtIntake.set(ControlMode.PercentOutput, 0);
     mtIntake.set(0);
-    slndIntake1.set(false);  //added bjk at fll
-    //slndIntake2.set(false);  //added bjk at fll
-    SmartDashboard.putBoolean("Intake Solenoid Set Value", false);
-    bintakeOn = false;
+    //slndIntake1.set(false);  //added bjk at fll
+    //SmartDashboard.putBoolean("Intake Solenoid Set Value", false);
+    //bintakeOn = false;
   }
 
 
   public void intakeExtension(boolean extension) {
-    if (extension = true){
-    slndIntake1.set(true);
-    //slndIntake2.set(true);
-    bintakeOn = true;
-
+    
+    
+    if (extension){
+       slndIntake1.set(true);
+       bintakeOn = true;
+       SmartDashboard.putBoolean("Intake Solenoid Set Value", true);
+       SmartDashboard.putString("Intake Audit", "intakeextension");
+    } else {
+      slndIntake1.set(false);
+      bintakeOn = false;
+      SmartDashboard.putBoolean("Intake Solenoid Set Value", false);  
     }
     
-    else if (extension = false){
-      slndIntake1.set(false);
-      //slndIntake2.set(false);
-      bintakeOn = false;
-    }
-    else{
-
-    }
-
   }
 
 
@@ -87,7 +83,23 @@ private final static Solenoid slndIntake1 = Constants.slndIntake1;
       return false;
     }
     //return bintakeOn;
-    //return slndIntake.get();
+    
+  }
+
+
+  public void Intake_Toggle(){
+    if(bintakeOn){
+      SmartDashboard.putString("Intake Toggle", "Off"); 
+      intakeExtension(false);
+       setIntake(0);
+    }else{
+      SmartDashboard.putString("Intake Toggle", "On");
+      intakeExtension(true);
+      setIntake(0.5);
+    }
+
+
+
   }
 
 

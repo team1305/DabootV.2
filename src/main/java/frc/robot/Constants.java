@@ -36,14 +36,34 @@ public final class Constants {
 	 //motor ID for intake
 	public static WPI_TalonFX mtIntake = new WPI_TalonFX(15); //set the motor to the right ID
 	
-	 //solenoids for Intake
-	 public static Solenoid slndIntake1 =  new Solenoid(PneumaticsModuleType.CTREPCM, 4); //set the solenoid to right ID, and add the moduler type
-	 //public static Solenoid slndIntake2 =  new Solenoid(PneumaticsModuleType.CTREPCM, 1);
+
+	// Motor ID for Elevator
+	public static WPI_TalonFX mtElevator = new WPI_TalonFX(16); //set the motor to the right ID
 	
+	// Motor ID for Shooter
+	public static WPI_TalonFX mtShooter1 = new WPI_TalonFX(17); //set the motor to the right ID
+	public static WPI_TalonFX mtShooter2 = new WPI_TalonFX(18); //set the motor to the right ID
+
+	// Motor ID for Climb
+	public static WPI_TalonFX mtClimb1 = new WPI_TalonFX(20); //set the motor to the right ID
+	public static WPI_TalonFX mtClimb2 = new WPI_TalonFX(21); //set the motor to the right ID
+
+
+// 0 - Climb
+// 1 - Shooter Angle
+// 6 - Intake
+
+	//solenoids for Intake   
+	 public static Solenoid slndIntake =  new Solenoid(PneumaticsModuleType.CTREPCM, 6); //set the solenoid to right ID, and add the moduler type
+	
+	//solenoids for Shooter
+	public static Solenoid slndShooter =  new Solenoid(PneumaticsModuleType.CTREPCM, 1); //set the solenoid to right ID, and add the moduler type
+	//solenoids for Clim
+	public static Solenoid slndClimb =  new Solenoid(PneumaticsModuleType.CTREPCM, 0); //set the solenoid to right ID, and add the moduler type
+
 	//declares compressor port
 	public static Compressor cmpRobotCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
-	 
-
+	 	
 
 
 //BUTTON NUMBER CONSTANTS

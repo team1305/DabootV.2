@@ -5,27 +5,35 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Subsystem_Intake;
+import frc.robot.subsystems.Subsystem_Shooter;
 
-public class Command_Intake extends CommandBase {
+public class Command_Shooter extends CommandBase {
   /** Creates a new Command_Intake. */
-  private final Subsystem_Intake intakeSub;
- 
-
+  private final Subsystem_Shooter shooterSub;
+  private double bspeed;
+  private boolean shooterup;
   
-  public Command_Intake(Subsystem_Intake intake) {
+  public Command_Shooter(Subsystem_Shooter shooter, double bspeed, boolean shooterup ) {
     // Use addRequirements() here to declare subsystem dependencies.
-    intakeSub = intake; 
-    addRequirements(intakeSub);
+    shooterSub = shooter;
+    this.bspeed = bspeed;
+    this.shooterup = shooterup;
+    addRequirements(shooterSub);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.intake.intakeExtension(true);
-    RobotContainer.intake.setIntake(0.5); 
-    RobotContainer.elevator.setElevator(0.5);
+    //RobotContainer.intake.intakeExtension(true);
+    if (shooterup) {
+      RobotContainer.shooter.ShooterUp();
+    }
+    else {
+      RobotContainer.shooter.ShooterDown();
+    }
+    RobotContainer.shooter.setShooter(bspeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -37,9 +45,8 @@ public class Command_Intake extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.intake.intakeExtension(false);
-    RobotContainer.intake.stopIntake();
-    RobotContainer.elevator.setElevator(0);
+
+    RobotContainer.shooter.stopShooter();
   }
 
   // Returns true when the command should end.

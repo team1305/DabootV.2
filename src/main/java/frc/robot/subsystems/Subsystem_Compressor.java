@@ -7,8 +7,9 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
-public class Subsystem_Compressor_Power extends SubsystemBase {
+public class Subsystem_Compressor extends SubsystemBase {
   /** Creates a new Subsystem_Compressor_Power. */
   private final Compressor compressor = Constants.cmpRobotCompressor;
 
@@ -31,7 +32,7 @@ public class Subsystem_Compressor_Power extends SubsystemBase {
   }
 
 
-  public Subsystem_Compressor_Power() {}
+  public Subsystem_Compressor() {}
 
   @Override
   public void periodic() {
