@@ -4,19 +4,17 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.SPI;
-
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -89,6 +87,9 @@ public class Subsystem_Drivebase extends SubsystemBase {
     mtRight1.configStatorCurrentLimit(Constants.currentLimitConfig, 40);
     mtRight2.configStatorCurrentLimit(Constants.currentLimitConfig, 40);
     
+
+    //SlewRateLimiter filter = new SlewRateLimiter(0.5);
+
   }
 
   @Override
@@ -147,6 +148,7 @@ public class Subsystem_Drivebase extends SubsystemBase {
     SmartDashboard.putNumber("RAW Gyro Angle", angle);
     SmartDashboard.putNumber("RAW Encoder Right",dist);
     curvaturedrive(xSpeed, zRotation);
+    //curvaturedrive(filter.calculate(xSpeed), zRotation);
     
   }
 
