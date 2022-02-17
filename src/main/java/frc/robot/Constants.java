@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -32,6 +33,8 @@ public final class Constants {
     public final static StatorCurrentLimitConfiguration currentLimitConfig = new StatorCurrentLimitConfiguration(true, 40, 39.95, 1);
 	 public final static StatorCurrentLimitConfiguration currentLimitConfig30 = new StatorCurrentLimitConfiguration(true, 30, 29.95, 1);
 
+    // Led spark
+	 public static Spark mtLed = new Spark(9);
 
 	 //motor ID for intake
 	public static WPI_TalonFX mtIntake = new WPI_TalonFX(15); //set the motor to the right ID
@@ -47,6 +50,7 @@ public final class Constants {
 	// Motor ID for Climb
 	public static WPI_TalonFX mtClimb1 = new WPI_TalonFX(20); //set the motor to the right ID
 	public static WPI_TalonFX mtClimb2 = new WPI_TalonFX(21); //set the motor to the right ID
+
 
 
 // 0 - Climb
@@ -77,5 +81,32 @@ public static final int BACK=  7; //xbox "Back" Button 7
 public static final int START =  8;  //xbox "Start" Button 8
 public static final int LEFT_STICK_CLICK =  9; //xbox "Left Stick Click" Button 9
 public static final int RIGHT_STICK_CLICK =  10;  //xbox "Right Stick Click" Button 10
+
+	 //Limelight PID and Constants
+	 public static final double LIMELIGHT_KP = -0.03f;
+	 public static final double LIMELIGHT_KI = 0.012f; // 0.006
+	 public static final double LIMELIGHT_KD = 0; // 0.006
+	 public static final double LIMELIGHT_KF = 0.05f;  //feedforward - minimum command signal
+ 
+	 public static final double HORIZONTAL_PIXEL_TO_ANGLE = 59.6/320; //   59.6/320
+	 public static final double VERTICAL_PIXEL_TO_ANGLE = 49.7/240; //   49.7/240
+	 public static final double HALF_VERTICAL_FOV_DEGREES = 24.85;
+	 public static final double HALF_HORIZONTAL_FOV_DEGREES = 29.9;
+	 public static final double ANGLE_OUTER_TRIANGLE_DEGREES = 45.418; //Degrees
+	 public static final double DIAGONAL_LENGTH_FROM_OUTER_TO_INNER= 24.219; //Inches
+ 
+	 public static final double HORIZONTAL_PIXEL_TO_RADIANS = (59.6 * (Math.PI/180))/320; //   (59.6)*(Math.PI/180)/320
+	 public static final double VERTICAL_PIXEL_TO_RADIANS = (49.7 * (Math.PI/180))/240; //   49.7/240
+	 public static final double HALF_VERTICAL_FOV_RADIANS = 24.85 * (Math.PI/180);
+	 public static final double HALF_HORIZONTAL_FOV_RADIANS = 29.9 * (Math.PI/180);
+	 public static final double ANGLE_OUTER_TRIANGLE_RADIANS = (45.418) * (Math.PI/180); //Radians
+ 
+	 public static final double VISION_LEFT_KP = 0; //THIS VALUE MUST BE FOUND
+	 public static final double VISION_LEFT_KI = 0;//THIS VALUE MUST BE FOUND
+	 public static final double VISION_LEFT_KD = 0;//THIS VALUE MUST BE FOUND
+	 public static final double VISION_RIGHT_KP = 0;//THIS VALUE MUST BE FOUND
+	 public static final double VISION_RIGHT_KI = 0;//THIS VALUE MUST BE FOUND
+	 public static final double VISION_RIGHT_KD = 0;//THIS VALUE MUST BE FOUND
+
 
 }
