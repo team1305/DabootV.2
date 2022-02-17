@@ -4,8 +4,6 @@
 
 package frc.robot.commands;
 
-import javax.lang.model.util.ElementScanner6;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Subsystem_Shooter;
@@ -23,12 +21,11 @@ public class Command_Shooter_Toggle extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (RobotContainer.shooter.isShooterUp()) {
-       RobotContainer.shooter.ShooterDown();
-    } else {
        RobotContainer.shooter.ShooterUp();
-    } 
   }
+    
+      
+  
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -39,6 +36,7 @@ public class Command_Shooter_Toggle extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    RobotContainer.shooter.ShooterDown();
 
   }
 

@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Subsystem_Shooter;
 
@@ -13,27 +12,31 @@ public class Command_Shooter extends CommandBase {
   /** Creates a new Command_Intake. */
   private final Subsystem_Shooter shooterSub;
   private double bspeed;
-  private boolean shooterup;
+  //private boolean shooterup;
   
   public Command_Shooter(Subsystem_Shooter shooter, double bspeed, boolean shooterup ) {
     // Use addRequirements() here to declare subsystem dependencies.
     shooterSub = shooter;
     this.bspeed = bspeed;
-    this.shooterup = shooterup;
+    //this.shooterup = shooterup;
     addRequirements(shooterSub);
   }
+
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     //RobotContainer.intake.intakeExtension(true);
+    /*    
     if (shooterup) {
       RobotContainer.shooter.ShooterUp();
     }
     else {
       RobotContainer.shooter.ShooterDown();
     }
+    */
     RobotContainer.shooter.setShooter(bspeed);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
