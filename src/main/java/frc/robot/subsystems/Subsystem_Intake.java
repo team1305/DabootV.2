@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -18,6 +17,7 @@ public class Subsystem_Intake extends SubsystemBase {
 
 
   private final static WPI_TalonFX mtIntake = Constants.mtIntake;
+
 
 private final static Solenoid slndIntake1 = Constants.slndIntake;
 //private final static Solenoid slndIntake2 = Constants.slndIntake2;
