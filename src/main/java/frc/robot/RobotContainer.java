@@ -30,7 +30,7 @@ public class RobotContainer {
 
   // Xbox Controllers
   final static XboxController PRIMARY = new XboxController(0);
-  //final static XboxController SECONDARY = new XboxController(1);
+  final static XboxController SECONDARY = new XboxController(1);
 
 
   // The robot's subsystems and commands are defined here...
@@ -65,25 +65,27 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    /*
-    new JoystickButton(SECONDARY, Constants.A_BUTTON).whileHeld(new Command_Intake(intake));
+    
+    /* Climb uses DPad 
+    AI loop uses Right Bmper */
+    new JoystickButton(SECONDARY, Constants.LEFT_BUMPER).whileHeld(new Command_Intake(intake));
     new JoystickButton(SECONDARY, Constants.B_BUTTON).whileHeld(new Command_Elevator(elevator, 0.4));
-    new JoystickButton(SECONDARY, Constants.X_BUTTON).whileHeld(new Command_Shooter(shooter, 0.7, false));
-    new JoystickButton(SECONDARY, Constants.BACK).whenPressed(new Command_Compressor_Off(compressor));
-    new JoystickButton(SECONDARY, Constants.START).whenPressed(new Command_Compressor_On(compressor));
-    new JoystickButton(SECONDARY, Constants.RIGHT_BUMPER).whenPressed(new Command_Shooter_Toggle(shooter));
+    // new JoystickButton(SECONDARY, Constants.X_BUTTON).whileHeld(new Command_Shooter(shooter, 0.7, false));
+    // new JoystickButton(SECONDARY, Constants.BACK).whenPressed(new Command_Compressor_Off(compressor));
+    // new JoystickButton(SECONDARY, Constants.START).whenPressed(new Command_Compressor_On(compressor));
+    // new JoystickButton(SECONDARY, Constants.RIGHT_BUMPER).whenPressed(new Command_Shooter_Toggle(shooter));
     new JoystickButton(SECONDARY, Constants.Y_BUTTON).whileHeld(new Command_Elevator(elevator, -0.2));
-    */
+    
 
-    new JoystickButton(PRIMARY, Constants.LEFT_BUMPER).whileHeld(new Command_Intake(intake));
-    new JoystickButton(PRIMARY, Constants.B_BUTTON).whileHeld(new Command_Elevator(elevator, 0.4));
-    new JoystickButton(PRIMARY, Constants.RIGHT_BUMPER).whileHeld(new Command_Shooter(shooter, 0.7, false));
+    // new JoystickButton(PRIMARY, Constants.LEFT_BUMPER).whileHeld(new Command_Intake(intake));
+    // new JoystickButton(PRIMARY, Constants.B_BUTTON).whileHeld(new Command_Elevator(elevator, 0.4));
+    new JoystickButton(PRIMARY, Constants.X_BUTTON).whileHeld(new Command_Shooter(shooter, 0.7, false));
     new JoystickButton(PRIMARY, Constants.BACK).whenPressed(new Command_Compressor_Off(compressor));
     new JoystickButton(PRIMARY, Constants.START).whenPressed(new Command_Compressor_On(compressor));
-    //new JoystickButton(PRIMARY, Constants.A_BUTTON).whenHeld(new Command_Shooter_Toggle(shooter));
-    new JoystickButton(PRIMARY, Constants.Y_BUTTON).whileHeld(new Command_Elevator(elevator, -0.2));
-    new JoystickButton(PRIMARY, Constants.X_BUTTON).whileHeld(new Command_Climb(Climb, 0.75)); // Climb
-    new JoystickButton(PRIMARY, Constants.A_BUTTON).whileHeld(new Command_Climb(Climb, -0.75)); // Extend
+    // new JoystickButton(PRIMARY, Constants.A_BUTTON).whenHeld(new Command_Shooter_Toggle(shooter));
+    // new JoystickButton(PRIMARY, Constants.Y_BUTTON).whileHeld(new Command_Elevator(elevator, -0.2));
+    // new JoystickButton(PRIMARY, Constants.A_BUTTON).whileHeld(new Command_Climb(Climb, 0.75)); // Climb
+    // new JoystickButton(PRIMARY, Constants.X_BUTTON).whileHeld(new Command_Climb(Climb, -0.75)); // Extend
     
     
     //new JoystickButton(SECONDARY, Constants.X_BUTTON).whileHeld(new Command_Climb(Climb, 0.5));
@@ -105,12 +107,12 @@ public class RobotContainer {
   public static XboxController getJoystickDriver() {
     return PRIMARY;
   }
-/*
+
   //returns joyxbox2 whenever getJoystickOperator is called
   public static XboxController getJoystickOperator() {
     return SECONDARY;
   }
-  */
+
 
 
 }
