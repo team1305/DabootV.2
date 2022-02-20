@@ -22,6 +22,7 @@ public class Command_Shooter_Toggle extends CommandBase {
   @Override
   public void initialize() {
        RobotContainer.shooter.ShooterUp();
+       
   }
     
       
@@ -36,7 +37,9 @@ public class Command_Shooter_Toggle extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.shooter.ShooterDown();
+   RobotContainer.shooter.ShooterDown();
+   
+
 
   }
 

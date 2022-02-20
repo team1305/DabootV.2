@@ -33,12 +33,12 @@ public class Subsystem_Climb extends SubsystemBase {
   }
 
   public void HighGear() {
-    slndClimb1.set(false);
+    slndClimb1.set(true);
 
   }
 
   public void LowGear() {
-    slndClimb1.set(true);
+    slndClimb1.set(false);
 
   }
 

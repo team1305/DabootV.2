@@ -14,7 +14,9 @@ import frc.robot.subsystems.*;
 
 import frc.robot.commands.Command_Elevator;
 import frc.robot.commands.Command_Intake;
+import frc.robot.commands.Command_Shoot_Launch_Pad;
 import frc.robot.commands.Command_Shooter;
+import frc.robot.commands.Command_Shooter_Toggle;
 import frc.robot.commands.Command_Compressor_Off;
 import frc.robot.commands.Command_Compressor_On;
 import frc.robot.commands.Command_Climb;
@@ -74,18 +76,18 @@ public class RobotContainer {
     // new JoystickButton(SECONDARY, Constants.BACK).whenPressed(new Command_Compressor_Off(compressor));
     // new JoystickButton(SECONDARY, Constants.START).whenPressed(new Command_Compressor_On(compressor));
     // new JoystickButton(SECONDARY, Constants.RIGHT_BUMPER).whenPressed(new Command_Shooter_Toggle(shooter));
-    new JoystickButton(SECONDARY, Constants.Y_BUTTON).whileHeld(new Command_Elevator(elevator, -0.2));
+    new JoystickButton(SECONDARY, Constants.X_BUTTON).whileHeld(new Command_Elevator(elevator, -0.2));
     
 
-    // new JoystickButton(PRIMARY, Constants.LEFT_BUMPER).whileHeld(new Command_Intake(intake));
+    new JoystickButton(PRIMARY, Constants.LEFT_BUMPER).whileHeld(new Command_Intake(intake));
     // new JoystickButton(PRIMARY, Constants.B_BUTTON).whileHeld(new Command_Elevator(elevator, 0.4));
-    new JoystickButton(PRIMARY, Constants.X_BUTTON).whileHeld(new Command_Shooter(shooter, 0.7, false));
+    new JoystickButton(PRIMARY, Constants.X_BUTTON).whileHeld(new Command_Shooter(shooter, 0.72));
     new JoystickButton(PRIMARY, Constants.BACK).whenPressed(new Command_Compressor_Off(compressor));
     new JoystickButton(PRIMARY, Constants.START).whenPressed(new Command_Compressor_On(compressor));
-    // new JoystickButton(PRIMARY, Constants.A_BUTTON).whenHeld(new Command_Shooter_Toggle(shooter));
+    new JoystickButton(PRIMARY, Constants.RIGHT_BUMPER).whileHeld(new Command_Shoot_Launch_Pad(shooter, 0.72));
     // new JoystickButton(PRIMARY, Constants.Y_BUTTON).whileHeld(new Command_Elevator(elevator, -0.2));
-    // new JoystickButton(PRIMARY, Constants.A_BUTTON).whileHeld(new Command_Climb(Climb, 0.75)); // Climb
-    // new JoystickButton(PRIMARY, Constants.X_BUTTON).whileHeld(new Command_Climb(Climb, -0.75)); // Extend
+     new JoystickButton(SECONDARY, Constants.Y_BUTTON).whileHeld(new Command_Climb(Climb, 0.75)); // Climb
+     new JoystickButton(SECONDARY, Constants.A_BUTTON).whileHeld(new Command_Climb(Climb, -0.5)); // Extend
     
     
     //new JoystickButton(SECONDARY, Constants.X_BUTTON).whileHeld(new Command_Climb(Climb, 0.5));

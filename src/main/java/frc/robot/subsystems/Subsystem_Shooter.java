@@ -57,23 +57,35 @@ private final static Solenoid slndShooter = Constants.slndShooter;
   public void ShooterUp() {
     
     slndShooter.set(true);
-    bShooterUp = true;
+    //bShooterUp = true;
   }
 
   public void ShooterDown() {
     slndShooter.set(false);
 
-    bShooterUp = false;  
+    //bShooterUp = false;  
   }
-
+/*
  public boolean isShooterUp() {
   if (bShooterUp) {
     return true;
-
   } else {
     return false;
   }
  }
+ 
+
+ public void ShooterToggle(){
+slndShooter.toggle();
+
+
+ }
+
+ public void ShooterDefault(){
+slndShooter.set(true);
+
+ }
+ */
  
  
 

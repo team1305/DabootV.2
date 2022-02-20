@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Subsystem_Shooter;
 
-public class Command_Shooter extends CommandBase {
+public class Command_Shoot_Launch_Pad extends CommandBase {
   /** Creates a new Command_Intake. */
   private final Subsystem_Shooter shooterSub;
   private double bspeed;
   //private boolean shooterup;
   //, boolean shooterup
-  public Command_Shooter(Subsystem_Shooter shooter, double bspeed) {
+  public Command_Shoot_Launch_Pad(Subsystem_Shooter shooter, double bspeed) {
     // Use addRequirements() here to declare subsystem dependencies.
     shooterSub = shooter;
     this.bspeed = bspeed;
@@ -35,6 +35,7 @@ public class Command_Shooter extends CommandBase {
       RobotContainer.shooter.ShooterDown();
     }
     */
+    RobotContainer.shooter.ShooterUp();
     RobotContainer.shooter.setShooter(bspeed);
 
   }
@@ -48,7 +49,7 @@ public class Command_Shooter extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
+    RobotContainer.shooter.ShooterDown();
     RobotContainer.shooter.stopShooter();
   }
 

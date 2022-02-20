@@ -21,24 +21,19 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.Command_Drive_With_Joystick;
 
 
-public class Subsystem_Drivebase extends SubsystemBase {
+public class Subsystem_Drivebase_old extends SubsystemBase {
   /** Creates a new Subsystem_Drivebase. */
   AHRS navx;
 
+ 
+ 
+  // variable for deadband
+  public double dDeadband = 0.1;
+  public double dSquareFactor = 1.0;
+  public double dThrottleFactor = 0.1;
 
   private DifferentialDrive drRobotDrive;
 
-
-  public double dDeadband = 0.1;
-  public double dSquareFactor = 1.0;
-
-
-
-
-  // Lower number means more delay, higher is less delay
-  // 0.8 is a good number
-  public SlewRateLimiter rotationFilter = new SlewRateLimiter(0.8);
-  public SlewRateLimiter accelerationFilter = new SlewRateLimiter(0.8);
 
     // grabs drive motor information from RobotMap
     private final static WPI_TalonFX mtLeft1 = Constants.mtDriveLeft1;
@@ -47,14 +42,10 @@ public class Subsystem_Drivebase extends SubsystemBase {
     private final static WPI_TalonFX mtRight2 = Constants.mtDriveRight2;
 
     
-  public Subsystem_Drivebase() {
-
+  public Subsystem_Drivebase_old() {
+ 
     navx = new AHRS(SPI.Port.kMXP);
     navx.reset();
-
-
-
- 
 
     // creates motor controller groups for left and right motors
     final  MotorControllerGroup mcgLeft = new MotorControllerGroup(mtLeft1, mtLeft2);
@@ -92,7 +83,7 @@ public class Subsystem_Drivebase extends SubsystemBase {
     drRobotDrive.setSafetyEnabled(false);
 
 
-    drRobotDrive.setDeadband(0.06);
+ 
  
     mtLeft1.configStatorCurrentLimit(Constants.currentLimitConfig, 40);
     mtLeft2.configStatorCurrentLimit(Constants.currentLimitConfig, 40);
@@ -124,6 +115,19 @@ public class Subsystem_Drivebase extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
+  private double ThrottleScale(double throttle, double input) {
+    return (JoystickDeadBand(input) * (1 - (throttle * dThrottleFactor)));
+  }
+  private double JoystickDeadBand(double input) {
+    if (Math.abs(input) < dDeadband)
+      return 0;
+    else if (input > 0)
+      return Math.pow(((input - dDeadband) * (1 / (1 - dDeadband))), dSquareFactor);
+    else if (input < 0)
+      return ((Math.pow(((Math.abs(input) - dDeadband) * (1 / (1 - dDeadband))), dSquareFactor)) * -1);
+    else
+      return 0;
+  }
 
   // creates a driving function using specified joystick
   public void driveWithJoystick(XboxController xboxController) {
@@ -135,18 +139,18 @@ public class Subsystem_Drivebase extends SubsystemBase {
    
    
     // creates variables for joystick x and y values
-    double zRotation = xboxController.getRawAxis(4);
-    double xSpeed = xboxController.getLeftY(); 
+    double zRotation = ThrottleScale(Math.abs(xboxController.getLeftY() * 0.5), xboxController.getRawAxis(4) * -0.5);
+    double xSpeed = JoystickDeadBand(xboxController.getLeftY() * 1.0);
     double dist = getDistance();
+    double angle = gyroGetAngle();
     // uses joystick to do driving thing
 
-    
-    
    
     SmartDashboard.putNumber("drive stick  speed", xSpeed);
     SmartDashboard.putNumber("drive stick  rotation", zRotation);
+    SmartDashboard.putNumber("RAW Gyro Angle", angle);
     SmartDashboard.putNumber("RAW Encoder Right",dist);
-    curvaturedrive(rotationFilter.calculate(xSpeed), -1 * accelerationFilter.calculate(zRotation));
+    curvaturedrive(xSpeed, zRotation);
     //curvaturedrive(filter.calculate(xSpeed), zRotation);
     
   }
@@ -173,10 +177,10 @@ public class Subsystem_Drivebase extends SubsystemBase {
   public double gyroGetAngle() {
     return navx.getYaw();
   }
-
    
   public void curvaturedrive(double xspeed, double zrotation) {
-    // True means it can turn in place, false requires fwd/bk to turn
-    drRobotDrive.curvatureDrive(xspeed, zrotation, true);   
+    drRobotDrive.curvatureDrive(xspeed, zrotation, true);
+    
+    
   }
 }
