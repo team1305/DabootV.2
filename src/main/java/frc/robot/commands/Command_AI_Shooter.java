@@ -49,15 +49,15 @@ public class Command_AI_Shooter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooterSub.setShooter(bspeed);
+    /*shooterSub.setShooter(bspeed);
     aiLoop = 0;
-    hasFoundtarget = false;
+    hasFoundtarget = false;*/
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
+/*
     if (aiLoop < 2) {
          // roll back ball
     } else if ( aiLoop < 10 && !hasFoundtarget) {
@@ -70,14 +70,14 @@ public class Command_AI_Shooter extends CommandBase {
         aiLoop = -1;
         hasFoundtarget = false;
     }
-      aiLoop++;
+      aiLoop++; */
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
 
-    shooterSub.stopShooter();
+    //shooterSub.stopShooter();
   }
 
   // Returns true when the command should end.

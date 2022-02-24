@@ -108,5 +108,36 @@ public static final int RIGHT_STICK_CLICK =  10;  //xbox "Right Stick Click" But
 	 public static final double VISION_RIGHT_KI = 0;//THIS VALUE MUST BE FOUND
 	 public static final double VISION_RIGHT_KD = 0;//THIS VALUE MUST BE FOUND
 
+	 	//Shooter PID values
+	public static final double kP_SHOOTER_INFRONT_OF_LINE = 0.2; // 0.1; //0.095;  //0.085
+	public static final double kI_SHOOTER_INFRONT_OF_LINE = 0;
+	public static final double kD_SHOOTER_INFRONT_OF_LINE = 0;
+	public static final double kF_SHOOTER_INFRONT_OF_LINE = 0.0512;
+
+	public static final double kP_SHOOTER_INITIATION_LINE = 0.09;
+	public static final double kI_SHOOTER_INITIATION_LINE = 0;
+	public static final double kD_SHOOTER_INITIATION_LINE = 0;
+	public static final double kF_SHOOTER_INITIATION_LINE = 0.0512;
+
+	public static final double kP_SHOOTER_TRENCH = 0.1;
+	public static final double kI_SHOOTER_TRENCH = 0;
+	public static final double kD_SHOOTER_TRENCH = 0;
+	public static final double kF_SHOOTER_TRENCH = 0.0512;
+
+	public static final double kP_SHOOTER_TRENCH_BACK = 0.1;
+	public static final double kI_SHOOTER_TRENCH_BACK = 0;
+	public static final double kD_SHOOTER_TRENCH_BACK = 0;
+	public static final double kF_SHOOTER_TRENCH_BACK = 0.0512;
+
+
+
+	public static final int kIZone_SHOOTER = 200;
+	public static final double SHOOTER_OUTPUT_TO_ENCODER_RATIO = 1; //0.77; //Previous 3.0 Because 3 revolutions of the encoder was one revolution of the wheels, 24.0/36.0
+	public static final double TICKS_PER_ROTATION = 2048.0;
+	public static final int kLongCANTimeOutMs = 100;
+	public static final double kFlywheelTicksPerRevolution = 0;
+
+
+
 
 }

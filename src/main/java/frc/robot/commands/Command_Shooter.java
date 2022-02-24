@@ -11,13 +11,13 @@ import frc.robot.subsystems.Subsystem_Shooter;
 public class Command_Shooter extends CommandBase {
   /** Creates a new Command_Intake. */
   private final Subsystem_Shooter shooterSub;
-  private double bspeed;
+  private Integer irpm;
   //private boolean shooterup;
   //, boolean shooterup
-  public Command_Shooter(Subsystem_Shooter shooter, double bspeed) {
+  public Command_Shooter(Subsystem_Shooter shooter, Integer irpm) {
     // Use addRequirements() here to declare subsystem dependencies.
     shooterSub = shooter;
-    this.bspeed = bspeed;
+    this.irpm = irpm;
     //this.shooterup = shooterup;
     addRequirements(shooterSub);
   }
@@ -35,7 +35,7 @@ public class Command_Shooter extends CommandBase {
       RobotContainer.shooter.ShooterDown();
     }
     */
-    RobotContainer.shooter.setShooter(bspeed);
+    RobotContainer.shooter.setShooterRPM(irpm);
 
   }
 
@@ -49,7 +49,9 @@ public class Command_Shooter extends CommandBase {
   @Override
   public void end(boolean interrupted) {
 
-    RobotContainer.shooter.stopShooter();
+    //RobotContainer.shooter.setShooterRPM(0);
+    RobotContainer.shooter.stopShooter();;
+
   }
 
   // Returns true when the command should end.
