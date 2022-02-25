@@ -33,6 +33,10 @@ public class Subsystem_Drivebase extends SubsystemBase {
   public double dSquareFactor = 1.0;
 
 
+  private double Kp = Constants.LIMELIGHT_KP;
+  private double Ki = Constants.LIMELIGHT_KI; // 0.006
+  private double Kd = 0; // 0.006
+  private double Kf = Constants.LIMELIGHT_KF; // feedforward - minimum command signal
 
 
   // Lower number means more delay, higher is less delay
@@ -82,17 +86,17 @@ public class Subsystem_Drivebase extends SubsystemBase {
     mtLeft1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     mtRight1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
  
-    mtLeft1.configOpenloopRamp(0.2);
-    mtLeft2.configOpenloopRamp(0.2);
-    mtRight1.configOpenloopRamp(0.2);
-    mtRight2.configOpenloopRamp(0.2);
-    drRobotDrive.setDeadband(0.09); // By default, the Differential Drive class applies an input deadband of .02
+    mtLeft1.configOpenloopRamp(0.1); //0.2
+    mtLeft2.configOpenloopRamp(0.1); // 0.2
+    mtRight1.configOpenloopRamp(0.1); // 0.2
+    mtRight2.configOpenloopRamp(0.1); // 0.2
+    drRobotDrive.setDeadband(0.06); // By default, the Differential Drive class applies an input deadband of .02
     
 
     drRobotDrive.setSafetyEnabled(false);
 
 
-    drRobotDrive.setDeadband(0.06);
+    //drRobotDrive.setDeadband(0.06);
  
     mtLeft1.configStatorCurrentLimit(Constants.currentLimitConfig, 40);
     mtLeft2.configStatorCurrentLimit(Constants.currentLimitConfig, 40);
@@ -179,4 +183,86 @@ public class Subsystem_Drivebase extends SubsystemBase {
     // True means it can turn in place, false requires fwd/bk to turn
     drRobotDrive.curvatureDrive(xspeed, zrotation, true);   
   }
+
+  public void tankdrive(double lspeed, double rspeed) {
+    // True means it can turn in place, false requires fwd/bk to turn
+    drRobotDrive.tankDrive(lspeed, rspeed);   
+  }
+
+  public void DriveStop() {
+      tankdrive(0, 0);    
+  }
+
+  public double getLeftSide() {
+    double currentSpeed = mtLeft1.get();
+    return currentSpeed;
+  }
+
+  public double getRightSide() {
+    double currentSpeed = mtRight1.get();
+    return currentSpeed;
+  }
+
+  public void turnRobotToAngleAuto(double x) {
+
+    if (RobotContainer.Limelight.is_Target()) {
+      double left_command;
+      double right_command;
+
+      left_command = RobotContainer.drive.getLeftSide();
+      right_command = RobotContainer.drive.getRightSide();
+
+      double heading_error = -x;
+      double steering_adjust = 0.0f;
+      if (x > 1) {
+        steering_adjust = Kp * heading_error + Kf;
+      } else if (x < -1) {
+        steering_adjust = Kp * heading_error - Kf;
+      } else {
+        steering_adjust = 0;
+      }
+
+      left_command += steering_adjust;
+      right_command -= steering_adjust;
+
+      SmartDashboard.putNumber("Left Command", left_command);
+      SmartDashboard.putNumber("Right Command", right_command);
+      SmartDashboard.putNumber("Steering Adjust", steering_adjust);
+      SmartDashboard.putNumber("X", x);
+
+      if (left_command > 0.15) {
+        left_command = 0.15;
+      }
+
+      if (right_command > 0.15) {
+        right_command = 0.15;
+      }
+
+      RobotContainer.drive.tankdrive(-left_command, right_command);
+  
+    }
+  }
+
+
+  public void gyroReset() {
+    navx.reset();
+  }
+
+  public void resetEncoder() {
+   
+
+   mtRight1.setSelectedSensorPosition(0);
+   mtLeft1.setSelectedSensorPosition(0);
+
+ }
+
+ public double getgearratio() {
+  // Convert encoder ticks to 1 inch
+  double encoder_ticks = 2048;
+  double gearratio = 10.75;
+  
+  double wheel_circumfrance = 6 * Math.PI;
+  return Math.round((encoder_ticks * gearratio) / wheel_circumfrance);
+}
+
 }
