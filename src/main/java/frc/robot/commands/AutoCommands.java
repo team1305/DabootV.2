@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.auto_commands.Auto_Drive_Master;
@@ -33,8 +34,9 @@ public class AutoCommands extends SequentialCommandGroup {
 
         if (commandtorun == 1) { // 6 ball auto, straight lined up, our trench
             
-            addCommands(
-                new Auto_Drive_Master(0, 24, 0.8, 0.2, 0, 0)
+            addCommands(  // Auto Drive doesnt like 0.2 power
+                //new Auto_Drive_Master(0, 24, 0.5, 0.4, 2, 2),
+                new Auto_Tank_Rotate_Master(90, 0.4, -0.4, 4)
                );
             
             //addSequential(new Auto_Reset_Encoders());
