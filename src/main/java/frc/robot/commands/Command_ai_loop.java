@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Subsystem_Drivebase;
 import frc.robot.subsystems.Subsystem_Intake;
 import frc.robot.subsystems.Subsystem_LED;
 import frc.robot.subsystems.Subsystem_Limelight;
@@ -24,6 +25,7 @@ public class Command_ai_loop extends CommandBase {
   private final Subsystem_Limelight limelightSub ;
   private final Subsystem_Intake intakeSub ;
   private final Subsystem_LED ledSub;
+  private final Subsystem_Drivebase driveSub;
 
   private String cstate;
   
@@ -33,16 +35,18 @@ public class Command_ai_loop extends CommandBase {
   private double zone1threshold = 50; //  pixel width
   public double distance;
   private int iloops = 0;
+  private int ipreploops = 0;
   
   private int isuccess = 0; 
 
-  public Command_ai_loop(Subsystem_Shooter shooter, Subsystem_Limelight limelight,Subsystem_Intake intake,Subsystem_LED led) {
+  public Command_ai_loop(Subsystem_Shooter shooter, Subsystem_Limelight limelight,Subsystem_Intake intake,Subsystem_LED led, Subsystem_Drivebase drive) {
     // Use addRequirements() here to declare subsystem dependencies.
     shooterSub = shooter;
     limelightSub = limelight;
     intakeSub = intake;
     ledSub = led;
-    addRequirements(shooterSub, limelightSub, intakeSub, ledSub);
+    driveSub = drive;
+    addRequirements(shooterSub, limelightSub, ledSub);
   }
 
   // Called when the command is initially scheduled.
@@ -53,19 +57,21 @@ public class Command_ai_loop extends CommandBase {
     irpm = 0;
     btarget = false;
     isuccess = 0;
+    SmartDashboard.putString("AI_LOOP", "INITIALIZED" );
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // AI Loop, States HUNT, SHOOT
+    // AI Loop, States HUNT, PREP, SHOOT
 
      // Colour Loop
-     set_colors();
-/*
+     //set_colors();
+
      //Vision tracking code, activates when right bumper is pressed
      if (RobotContainer.getJoystickDriver().getRawButton(6)) { // Driver RB
-
+      SmartDashboard.putString("AI_LOOP", "RB PRESSED" );
+  
       if (RobotContainer.Limelight.isLimelightOn() == false){
         RobotContainer.Limelight.limelightOn();
       }
@@ -75,16 +81,19 @@ public class Command_ai_loop extends CommandBase {
        case "HUNT" : 
          // Use Limelight to move to target
          //RobotContainer.drive.LowGear();
-         RobotContainer.shooter.setShooterRPM(4000); // ramp up to 4000 rpm as base so shoot will be faster
+    //     RobotContainer.shooter.setShooterRPM(4000); // ramp up to 4000 rpm as base so shoot will be faster
 
          // display target distance when in hunt state
          //SmartDashboard.putNumber("thedistance", Robot.limelight.getDistance());
-         
+         SmartDashboard.putString("AI_LOOP", "IN HUNT LOOP" );
+  
+         ipreploops = 0;
+
          x = RobotContainer.Limelight.get_Tx();
          //x = x + Robot.limelight.getOffsetRatio();
          SmartDashboard.putNumber("x ai loop", x);
          
-         RobotContainer.drive.turnRobotToAngle(x);
+         RobotContainer.drive.turnRobotToAngle_New(x);
 
          if (Math.abs(x) <= 1){
           // Calc Distance away so we know zone 1 or zone 2
@@ -98,7 +107,8 @@ public class Command_ai_loop extends CommandBase {
 
           if (distance > 0){
             if (isuccess >= 5) {
-            cstate = "SHOOT";
+              ipreploops = 0;
+              cstate = "PREP";
            
             }
            SmartDashboard.putNumber("isuccess", isuccess);
@@ -108,9 +118,41 @@ public class Command_ai_loop extends CommandBase {
          
          //Check hood angle, and shooter speed based on zone
          break;
-        case "SHOOT" : 
-           
+        case "PREP" :
+           SmartDashboard.putString("AI_LOOP", "IN PREP LOOP" );
+           SmartDashboard.putNumber("PREPLOOPS", ipreploops );
+           RobotContainer.shooter.ShooterUp();
+           ipreploops = ipreploops + 1;
 
+           if (ipreploops <= 10) {
+            RobotContainer.elevator.setElevator(-0.2);
+           
+          } else {
+            RobotContainer.elevator.setElevator(0);
+             cstate = "SHOOT";
+           }
+        break;
+        case "SHOOT" : 
+            SmartDashboard.putString("AI_LOOP", "IN SHOOT LOOP" );
+            //RobotContainer.elevator.setElevator(0);
+           
+          // irpm = 5000; // approx 10 feet
+           //irpm = 3000; // low goal
+           irpm = 5600; 
+
+            RobotContainer.shooter.setShooterRPM(irpm); 
+            
+           if (RobotContainer.shooter.getShooterRPM() >= irpm) {
+            RobotContainer.elevator.setElevator(0.4);
+           
+           } else {
+            RobotContainer.elevator.setElevator(0);
+            
+           }
+            
+           
+           /*
+  
            isuccess = 0;
 
            if (distance <=200){ //1205
@@ -172,6 +214,7 @@ public class Command_ai_loop extends CommandBase {
               RobotContainer.hopper.setHopper(-0.4);
               RobotContainer.intake.setIntake(0.4);
           }
+          */
         break;
       }
       
@@ -180,17 +223,12 @@ public class Command_ai_loop extends CommandBase {
         if (cstate == "SHOOT") { // RECOVERY STATE
            // Button no longer pressed but last state was shoot
            // Turn off Shooter and Feeders
-           RobotContainer.shooter.setShooterRPM(0);
+           RobotContainer.shooter.setShooter(0);
            RobotContainer.elevator.stopElevator();
-           RobotContainer.hopper.stopHopper();
-           RobotContainer.intake.stopIntake();
+           RobotContainer.shooter.ShooterDown();
            
-           RobotContainer.shooter.hoodDown();
-
-           RobotContainer.drive.HighGear();
-
-           RobotContainer.led.setBlack();
-           RobotContainer.Limelight.limelightOff();
+           //RobotContainer.led.setBlack();
+           //RobotContainer.Limelight.limelightOff();
 
            cstate = "HUNT";
            izone = 1;
@@ -206,7 +244,7 @@ public class Command_ai_loop extends CommandBase {
         }
 
      }
-*/
+
   }
 
   protected void set_colors() {

@@ -78,7 +78,7 @@ private final static Solenoid slndShooter = Constants.slndShooter;
     SmartDashboard.putNumber("Shooter RPM", getShooterRPM());
     SmartDashboard.putNumber("Shooter Output Percent", mtShooter1.getMotorOutputPercent());
 
-    //setDefaultCommand(new Command_ai_loop(RobotContainer.shooter, RobotContainer.Limelight, RobotContainer.intake, RobotContainer.Led));
+    setDefaultCommand(new Command_ai_loop(RobotContainer.shooter, RobotContainer.Limelight, RobotContainer.intake, RobotContainer.Led, RobotContainer.drive));
 
   }
 

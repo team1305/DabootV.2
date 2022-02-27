@@ -11,10 +11,10 @@ import frc.robot.subsystems.Subsystem_Shooter;
 public class Command_Shoot_Launch_Pad extends CommandBase {
   /** Creates a new Command_Intake. */
   private final Subsystem_Shooter shooterSub;
-  private double bspeed;
+  private Integer bspeed;
   //private boolean shooterup;
   //, boolean shooterup
-  public Command_Shoot_Launch_Pad(Subsystem_Shooter shooter, double bspeed) {
+  public Command_Shoot_Launch_Pad(Subsystem_Shooter shooter, Integer bspeed) {
     // Use addRequirements() here to declare subsystem dependencies.
     shooterSub = shooter;
     this.bspeed = bspeed;
@@ -36,7 +36,7 @@ public class Command_Shoot_Launch_Pad extends CommandBase {
     }
     */
     RobotContainer.shooter.ShooterUp();
-    RobotContainer.shooter.setShooter(bspeed);
+    RobotContainer.shooter.setShooterRPM(bspeed);
 
   }
 

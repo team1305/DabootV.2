@@ -147,10 +147,22 @@ public class Subsystem_Limelight extends SubsystemBase {
 
 
   public boolean is_Target(){
-    if (table.getEntry("tv").getDouble(0) == 1) {
+    /*SmartDashboard.putNumber("AI_TA", table.getEntry("ta").getDouble(2) );
+    if (table.getEntry("ta").getDouble(0) > 0.17) {
+      SmartDashboard.putString("AI_HAS_TARGET", "YES" );
+  
       return true;
    } else {
-      return false;
+    SmartDashboard.putString("AI_HAS_TARGET", "NO" );
+    return false;
+   }*/
+    if (table.getEntry("tv").getDouble(0) == 1) {
+      SmartDashboard.putString("AI_HAS_TARGET", "YES" );
+  
+      return true;
+   } else {
+    SmartDashboard.putString("AI_HAS_TARGET", "NO" );
+    return false;
    }
   }
 
@@ -216,6 +228,8 @@ public class Subsystem_Limelight extends SubsystemBase {
  
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 
+    //SmartDashboard.putNumber("Limelight TX", table.getEntry("tx").getDouble(0));
+ 
     //double x = tx.getDouble();
 
 
