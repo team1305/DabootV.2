@@ -28,7 +28,7 @@ public class Auto_Tank_Rotate_Master extends SequentialCommandGroup {
     private double m_leftpower;
     private double m_rightpower;
     private double m_timeout;
-    private double m_minspeed = 0.17;
+    private double m_minspeed = 0.35;
     private double rampthreshold;
     private double startingangle;
 
@@ -39,22 +39,23 @@ public class Auto_Tank_Rotate_Master extends SequentialCommandGroup {
         m_rightpower = RightPower;
         m_timeout = TimeOut;
 
-        
+        addRequirements(RobotContainer.drive);  
 
         startingangle = RobotContainer.drive.gyroGetAngle();
-        //requires(Robot.drive);
+ 
 
     }
 
     // Called just before this Command runs the first time
     public void initialize() {
+        SmartDashboard.putString("Auto Rotate Init", "yes");
         if ( Math.abs( m_autorotateangle - RobotContainer.drive.gyroGetAngle()) <= 45) {
             rampthreshold = 35;
         } else { // > 45 degrees}
            rampthreshold = Math.abs( m_autorotateangle - RobotContainer.drive.gyroGetAngle()) / 2.5;
     }
 
-    	withTimeout(m_timeout);
+   // 	withTimeout(m_timeout);
 
     }
 
@@ -67,18 +68,18 @@ public class Auto_Tank_Rotate_Master extends SequentialCommandGroup {
 
         if (RobotContainer.drive.gyroGetAngle() > m_autorotateangle) { // turn left
             if ( Math.abs(m_autorotateangle - RobotContainer.drive.gyroGetAngle()) <  rampthreshold ) {
-                RobotContainer.drive.tankdrive(m_minspeed, m_minspeed);
+                RobotContainer.drive.tankdrive(m_minspeed, -m_minspeed);
              
             } else {
-                RobotContainer.drive.tankdrive(m_leftpower, m_leftpower);
+                RobotContainer.drive.tankdrive(m_leftpower, -m_leftpower);
 
             }
         } else { // turn right
             if ( Math.abs(m_autorotateangle - RobotContainer.drive.gyroGetAngle()) < rampthreshold ) {
-                RobotContainer.drive.tankdrive(-m_minspeed, -m_minspeed);
+                RobotContainer.drive.tankdrive(m_minspeed, -m_minspeed);
                 
             } else {
-                RobotContainer.drive.tankdrive(-m_leftpower, -m_leftpower);
+                RobotContainer.drive.tankdrive(m_leftpower, -m_leftpower);
 
             }
 

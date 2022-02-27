@@ -36,7 +36,7 @@ public class Auto_Drive_Master extends SequentialCommandGroup {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 
-		// requires(Robot.drive);
+		 addRequirements(RobotContainer.drive);
 
 		this.distance1 = distance1 * RobotContainer.drive.getgearratio(); // converts distance to encoder values
 		this.angle1 = angle1;
@@ -72,7 +72,7 @@ public class Auto_Drive_Master extends SequentialCommandGroup {
 
 			if (currPos <= (startPos + RampUpDist)) {
 				dif = angle1 - RobotContainer.drive.gyroGetAngle();
-				//dif = 0;
+			    //dif = 0;
 
 				RampUpPercent = (currPos / (startPos + RampUpDist));
 				SetPower = (MinSpeed + ((power - MinSpeed) * RampUpPercent));
@@ -94,7 +94,7 @@ public class Auto_Drive_Master extends SequentialCommandGroup {
 
 			} else if (currPos >= (target - RampDownDist)) {
 				dif = angle1 - RobotContainer.drive.gyroGetAngle();
-				//dif = 0;
+			    //dif = 0;
 
 				RampUpPercent = (currPos / (target - RampDownDist));
 				SetPower = (MinSpeed + ((power - MinSpeed) * RampUpPercent));
@@ -136,7 +136,10 @@ public class Auto_Drive_Master extends SequentialCommandGroup {
 				}
 
 			}
-		   RobotContainer.drive.tankdrive(-speedleft, speedright);
+		   SmartDashboard.putNumber("AutoTankLeft", speedleft);
+		   SmartDashboard.putNumber("AutoTankRight", speedright);
+		   
+			RobotContainer.drive.tankdrive(speedleft, speedright);
 	
 
 
@@ -210,9 +213,9 @@ public class Auto_Drive_Master extends SequentialCommandGroup {
 			}
 			
 			SmartDashboard.putNumber("speedleft", speedleft);
-			SmartDashboard.putNumber("speedright", -speedright);
+			SmartDashboard.putNumber("speedright", speedright);
 
-			RobotContainer.drive.tankdrive(speedleft, -speedright);
+			RobotContainer.drive.tankdrive(speedleft, speedright);
 			
 		}
 /*

@@ -81,10 +81,10 @@ public class RobotContainer {
 
     new JoystickButton(PRIMARY, Constants.LEFT_BUMPER).whileHeld(new Command_Intake(intake));
     // new JoystickButton(PRIMARY, Constants.B_BUTTON).whileHeld(new Command_Elevator(elevator, 0.4));
-    new JoystickButton(PRIMARY, Constants.X_BUTTON).whileHeld(new Command_Shooter(shooter, 3000)); // Chnaged to RPM Feb 23, 2022 Marcel
+    new JoystickButton(PRIMARY, Constants.X_BUTTON).whileHeld(new Command_Shooter(shooter, 5000)); // Chnaged to RPM Feb 23, 2022 Marcel
     new JoystickButton(PRIMARY, Constants.BACK).whenPressed(new Command_Compressor_Off(compressor));
     new JoystickButton(PRIMARY, Constants.START).whenPressed(new Command_Compressor_On(compressor));
-    new JoystickButton(PRIMARY, Constants.RIGHT_BUMPER).whileHeld(new Command_Shoot_Launch_Pad(shooter, 0.72));
+    //new JoystickButton(PRIMARY, Constants.RIGHT_BUMPER).whileHeld(new Command_Shoot_Launch_Pad(shooter, 6000));
     // new JoystickButton(PRIMARY, Constants.Y_BUTTON).whileHeld(new Command_Elevator(elevator, -0.2));
      //new JoystickButton(SECONDARY, Constants.Y_BUTTON).whileHeld(new Command_Climb(Climb, 0.75)); // Climb
      //new JoystickButton(SECONDARY, Constants.A_BUTTON).whileHeld(new Command_Climb(Climb, -0.5)); // Extend

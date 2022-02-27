@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -29,8 +30,8 @@ public class Subsystem_Drivebase extends SubsystemBase {
   private DifferentialDrive drRobotDrive;
 
 
-  public double dDeadband = 0.1;
-  public double dSquareFactor = 1.0;
+  //public double dDeadband = 0.1;
+  //public double dSquareFactor = 1.0;
 
 
   private double Kp = Constants.LIMELIGHT_KP;
@@ -41,8 +42,8 @@ public class Subsystem_Drivebase extends SubsystemBase {
 
   // Lower number means more delay, higher is less delay
   // 0.8 is a good number
-  public SlewRateLimiter rotationFilter = new SlewRateLimiter(0.8);
-  public SlewRateLimiter accelerationFilter = new SlewRateLimiter(0.8);
+  public SlewRateLimiter rotationFilter = new SlewRateLimiter(0.9);
+  public SlewRateLimiter accelerationFilter = new SlewRateLimiter(0.9);
 
     // grabs drive motor information from RobotMap
     private final static WPI_TalonFX mtLeft1 = Constants.mtDriveLeft1;
@@ -90,7 +91,7 @@ public class Subsystem_Drivebase extends SubsystemBase {
     mtLeft2.configOpenloopRamp(0.1); // 0.2
     mtRight1.configOpenloopRamp(0.1); // 0.2
     mtRight2.configOpenloopRamp(0.1); // 0.2
-    drRobotDrive.setDeadband(0.06); // By default, the Differential Drive class applies an input deadband of .02
+    drRobotDrive.setDeadband(0.02); // By default, the Differential Drive class applies an input deadband of .02
     
 
     drRobotDrive.setSafetyEnabled(false);
@@ -123,6 +124,8 @@ public class Subsystem_Drivebase extends SubsystemBase {
 
   }
 
+
+
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
@@ -150,18 +153,98 @@ public class Subsystem_Drivebase extends SubsystemBase {
     SmartDashboard.putNumber("drive stick  speed", xSpeed);
     SmartDashboard.putNumber("drive stick  rotation", zRotation);
     SmartDashboard.putNumber("RAW Encoder Right",dist);
-    curvaturedrive(rotationFilter.calculate(xSpeed), -1 * accelerationFilter.calculate(zRotation));
+    curvaturedrive(rotationFilter.calculate(xSpeed), -1 * accelerationFilter.calculate(zRotation)*(1-(0.5*Math.abs(xSpeed))));
     //curvaturedrive(filter.calculate(xSpeed), zRotation);
     
   }
 
+  public void turnRobotToAngle_New(double x) {
+    double left_command;
+    double right_command;
+
+    left_command = 0.4;
+    right_command = 0.4;
+
+    if (x > 1) {// Turn Right 
+    
+      right_command = 0 - right_command;
+      
+    } else if (x < - 1) {// Turn Left
+      
+        left_command = 0 - left_command;
+      
+      } else { // Stop
+        left_command = 0;
+        right_command = 0;
+
+      }
+    
+    RobotContainer.drive.tankdrive(left_command, right_command);
+} 
+
+
+
+  public void turnRobotToAngle(double x){
+
+    if (RobotContainer.Limelight.is_Target()) {
+      double left_command;
+      double right_command;
+
+      left_command = RobotContainer.drive.getLeftSide();
+      right_command = RobotContainer.drive.getRightSide();
+
+      double heading_error = -x;
+      double steering_adjust = 0.0f;
+           if (x > 1) 
+           {
+            steering_adjust = Kp*heading_error + Kf;
+          
+           }
+           else if (x < -1) // Turn left
+           {
+                   steering_adjust = Kp*heading_error - Kf;
+           }
+           else{
+             steering_adjust = 0;
+           }
+
+
+      left_command += steering_adjust;
+      right_command -= steering_adjust;
+
+      SmartDashboard.putNumber("Left Command", left_command);
+      SmartDashboard.putNumber("Right Command", right_command);
+      SmartDashboard.putNumber("Steering Adjust", steering_adjust);
+      SmartDashboard.putNumber("X", x);
+
+      if (left_command < 0.3){
+        left_command = 0.3;
+      }
+
+
+      if (left_command > 0.75){
+        left_command = 0.75;
+      }
+
+      if (right_command > 0.75){
+        right_command = 0.75;
+      }
+
+      if (right_command < 0.3){
+        right_command = 0.3;
+      }
+
+      RobotContainer.drive.tankdrive(-left_command, right_command);
+      //Robot.drive.setRightSide(right_command);
+    }
+  }
 
   public static double getDistance() {
     double left_wheel_rot = -1 * getEncLeftSide();
     double right_wheel_rot = getEncRightSide();
     SmartDashboard.putNumber("Left Encoder", left_wheel_rot);
     SmartDashboard.putNumber("Right Encoder", right_wheel_rot);
-    double average_wheel_rot = right_wheel_rot; // (left_wheel_rot + right_wheel_rot) / 2;
+    double average_wheel_rot = -right_wheel_rot; // (left_wheel_rot + right_wheel_rot) / 2;
     return average_wheel_rot;
 
   }
@@ -175,18 +258,29 @@ public class Subsystem_Drivebase extends SubsystemBase {
   }
 
   public double gyroGetAngle() {
+    SmartDashboard.putNumber("Gyro Angle", navx.getYaw());
     return navx.getYaw();
+
   }
 
    
   public void curvaturedrive(double xspeed, double zrotation) {
     // True means it can turn in place, false requires fwd/bk to turn
-    drRobotDrive.curvatureDrive(xspeed, zrotation, true);   
+    drRobotDrive.curvatureDrive(xspeed, zrotation, true);
+    SmartDashboard.putNumber("Drive Encoder", RobotContainer.drive.getDistance());   
   }
 
   public void tankdrive(double lspeed, double rspeed) {
     // True means it can turn in place, false requires fwd/bk to turn
-    drRobotDrive.tankDrive(lspeed, rspeed);   
+    SmartDashboard.putString("Tankdrive called", "Yes");
+    //mtLeft1.set(ControlMode.PercentOutput, lspeed);
+    //mtLeft2.set(ControlMode.PercentOutput, lspeed);
+    //mtRight1.set(ControlMode.PercentOutput, rspeed);
+    //mtRight2.set(ControlMode.PercentOutput, rspeed);
+ 
+    //drRobotDrive.curvatureDrive(lspeed, 0, true);
+ 
+   drRobotDrive.tankDrive(-lspeed, -rspeed);   
   }
 
   public void DriveStop() {
