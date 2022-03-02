@@ -31,6 +31,18 @@ public class Subsystem_LED extends SubsystemBase {
   private final double C_black = 0.99; //Off
   private final double C_Ocean_Palette = -0.41; //Off
 
+  /******* color assignments ********
+  Blue = blue ball
+  Red = red ball
+  green = shoot ready
+  white = teleop enabled
+  yellow = Intake
+  aqua = 
+  violet = 
+  ocean_palette = 
+  lava_wave = 
+  ******* color assignments ********/
+
   //boolean theArray[];
 
 
