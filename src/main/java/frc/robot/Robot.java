@@ -72,7 +72,7 @@ public class Robot extends TimedRobot {
       SmartDashboard.putData("AUTO Modes", autonomousModes);
   
     RobotContainer.compressor.CompressorON();
-    RobotContainer.Led.setBlue();
+    RobotContainer.Led.setWhite();
 
     RobotContainer.drive.resetEncoder();
     RobotContainer.drive.gyroReset();
