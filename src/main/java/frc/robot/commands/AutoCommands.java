@@ -35,8 +35,14 @@ public class AutoCommands extends SequentialCommandGroup {
         if (commandtorun == 1) { // 6 ball auto, straight lined up, our trench
             
             addCommands(  // Auto Drive doesnt like 0.2 power
-                //new Auto_Drive_Master(0, 24, 0.5, 0.4, 2, 2),
-                new Auto_Tank_Rotate_Master(90, 0.4, -0.4, 4)
+                new Auto_Drive_Master(0, 24, 0.5, 0.4, 2, 2),
+                new Auto_Tank_Rotate_Master(90, 0.4, -0.4, 4),
+                new Auto_Intake_On(),
+                new Auto_Drive_Master(90, 24, 0.5, 0.4, 2, 2),
+                new Auto_Intake_Off(),
+                new Auto_Turn_To_Target_Master(),
+                new Auto_Shoot(3)
+
                );
             
             //addSequential(new Auto_Reset_Encoders());
