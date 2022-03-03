@@ -17,21 +17,25 @@ public class Auto_Intake_On extends SequentialCommandGroup {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	
-         //requires(Robot.intake);
-         //requires(Robot.hopper);
+         addRequirements(RobotContainer.intake);
+         //addRequirements(RobotContainer.elevator);
+         //addRequirements(RobotContainer.shooter);
              	
     }
 
     // Called just before this Command runs the first time
     public void initialize() {
-		RobotContainer.intake.intakeExtension(true);
-    	//Robot.intake.enableIntake(0.5);
+        RobotContainer.intake.intakeExtension(true);
+        RobotContainer.intake.setIntake(0.5); 
+        RobotContainer.elevator.setElevator(0.4);
+        RobotContainer.shooter.setShooter(-0.3);
+      
     }
 
     // Called repeatedly when this Command is scheduled to run
     public void execute() {
-       RobotContainer.intake.setIntake(0.5); 
-       RobotContainer.elevator.setElevator(0.4);
+       //RobotContainer.intake.setIntake(0.5); 
+       //RobotContainer.elevator.setElevator(0.4);
        
 	
     }

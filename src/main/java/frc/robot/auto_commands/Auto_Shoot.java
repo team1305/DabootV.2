@@ -24,7 +24,7 @@ public class Auto_Shoot extends SequentialCommandGroup {
     }
 
 public void initialize() {
-    withTimeout(3);
+    withTimeout(5); // never shoot longer than 5 seconds
     getDistanceAuto();
 }
 
@@ -43,7 +43,7 @@ public void initialize() {
             // We are at speed, Turn on feeders
             RobotContainer.elevator.setElevator(0.4);
 
-            RobotContainer.intake.setIntake(0.4);
+            //RobotContainer.intake.setIntake(0.4);
             loopCounter = loopCounter + 1;
         }
 
@@ -51,7 +51,13 @@ public void initialize() {
 
     // Make this return true when this Command no longer needs to run execute()
     public boolean isFinished() {
-        return false;
+        
+        if (loopCounter >= (seconds*50)) {
+            return true;
+
+        } else {
+            return false;
+        }
         /*if (isTimedOut()) {
             return true;
         } else {
@@ -68,7 +74,7 @@ public void initialize() {
     protected void end() {
         RobotContainer.shooter.stopShooter();
         RobotContainer.elevator.setElevator(0);
-        RobotContainer.intake.setIntake(0);
+        //RobotContainer.intake.setIntake(0);
 
 
     }
@@ -80,6 +86,39 @@ public void initialize() {
     }
 
     private void getDistanceAuto(){
+     distance = RobotContainer.Limelight.getDistance();
+
+        if (distance < 60) {
+            irpm = 3000;
+          } else if ((distance >= 60) && (distance < 72)) {
+             irpm = 4000; 
+           } else if ((distance >= 72) && (distance < 84)) {
+             irpm = 4200; 
+           } else if ((distance >= 84) && (distance < 104)) {
+             irpm = 4400; 
+           } else if ((distance >= 104) && (distance < 116)) {
+             irpm = 4500; 
+           } else if ((distance >= 116) && (distance < 130)) {
+             irpm = 4700; 
+           } else if ((distance >= 130) && (distance < 145)) {
+             irpm = 4800; 
+           } else if ((distance >= 130) && (distance < 137)) {
+             irpm = 4900; 
+           } else if ((distance >= 137) && (distance < 145)) {
+             irpm = 5000; 
+           } else if ((distance >= 145) && (distance < 160)) {
+             irpm = 5300; 
+          } else if(distance >= 160) {
+             irpm = 5600;
+          }
+   
+          if (distance >= 150) {
+            RobotContainer.shooter.ShooterUp();
+          } else {
+           RobotContainer.shooter.ShooterDown();
+            
+          }
+
         /*distance = Robot.limelight.getDistance();
 
         if (distance <= 200) { // 1205

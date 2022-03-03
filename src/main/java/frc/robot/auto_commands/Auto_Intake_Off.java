@@ -23,15 +23,19 @@ public class Auto_Intake_Off extends SequentialCommandGroup {
 
     // Called just before this Command runs the first time
     public void initialize() {
-		RobotContainer.intake.intakeExtension(false);
-		//Robot.intake.enableIntake(0);
+	
+    RobotContainer.intake.intakeExtension(false);
+    RobotContainer.intake.setIntake(0); 
+    RobotContainer.elevator.setElevator(0);
+    RobotContainer.shooter.setShooter(0);
+
     }
 
     // Called repeatedly when this Command is scheduled to run
     public void execute() {
       //RobotContainer.intake.intakeExtension(false);
-      RobotContainer.intake.setIntake(0);
-      RobotContainer.elevator.setElevator(0);
+      //RobotContainer.intake.setIntake(0);
+      //RobotContainer.elevator.setElevator(0);
     }
 
     // Make this return true when this Command no longer needs to run execute()

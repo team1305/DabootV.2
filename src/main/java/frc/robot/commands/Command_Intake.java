@@ -7,25 +7,31 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Subsystem_Intake;
+import frc.robot.subsystems.Subsystem_LED;
 
 public class Command_Intake extends CommandBase {
   /** Creates a new Command_Intake. */
   private final Subsystem_Intake intakeSub;
+  private final Subsystem_LED ledSub;
  
 
   
-  public Command_Intake(Subsystem_Intake intake) {
+  public Command_Intake(Subsystem_Intake intake, Subsystem_LED led) {
     // Use addRequirements() here to declare subsystem dependencies.
     intakeSub = intake; 
-    addRequirements(intakeSub);
+    ledSub = led;
+    addRequirements(intakeSub, led);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     RobotContainer.intake.intakeExtension(true);
-    RobotContainer.intake.setIntake(0.5); 
+    RobotContainer.intake.setIntake(0.75); 
     RobotContainer.elevator.setElevator(0.4);
+    RobotContainer.shooter.setShooter(-0.3);
+
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -40,6 +46,7 @@ public class Command_Intake extends CommandBase {
     RobotContainer.intake.intakeExtension(false);
     RobotContainer.intake.stopIntake();
     RobotContainer.elevator.setElevator(0);
+    RobotContainer.shooter.setShooter(0);
   }
 
   // Returns true when the command should end.

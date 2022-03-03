@@ -57,7 +57,7 @@ public class Command_ai_loop extends CommandBase {
     irpm = 0;
     btarget = false;
     isuccess = 0;
-    SmartDashboard.putString("AI_LOOP", "INITIALIZED" );
+    //SmartDashboard.putString("AI_LOOP", "INITIALIZED" );
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -70,7 +70,7 @@ public class Command_ai_loop extends CommandBase {
 
      //Vision tracking code, activates when right bumper is pressed
      if (RobotContainer.getJoystickDriver().getRawButton(6)) { // Driver RB
-      SmartDashboard.putString("AI_LOOP", "RB PRESSED" );
+      //SmartDashboard.putString("AI_LOOP", "RB PRESSED" );
   
       if (RobotContainer.Limelight.isLimelightOn() == false){
         RobotContainer.Limelight.limelightOn();
@@ -85,7 +85,7 @@ public class Command_ai_loop extends CommandBase {
 
          // display target distance when in hunt state
          //SmartDashboard.putNumber("thedistance", Robot.limelight.getDistance());
-         SmartDashboard.putString("AI_LOOP", "IN HUNT LOOP" );
+         //SmartDashboard.putString("AI_LOOP", "IN HUNT LOOP" );
   
          ipreploops = 0;
 
@@ -120,8 +120,13 @@ public class Command_ai_loop extends CommandBase {
          break;
         case "PREP" :
            SmartDashboard.putString("AI_LOOP", "IN PREP LOOP" );
-           SmartDashboard.putNumber("PREPLOOPS", ipreploops );
-           RobotContainer.shooter.ShooterUp();
+           //SmartDashboard.putNumber("PREPLOOPS", ipreploops );
+           if (distance >= 150) {
+             RobotContainer.shooter.ShooterUp();
+           } else {
+            RobotContainer.shooter.ShooterDown();
+             
+           }
            ipreploops = ipreploops + 1;
 
            if (ipreploops <= 10) {
@@ -138,8 +143,36 @@ public class Command_ai_loop extends CommandBase {
            
           // irpm = 5000; // approx 10 feet
            //irpm = 3000; // low goal
-           irpm = 5600; 
-
+           // irpm = 5600 and hoodup from launch pad
+           // irpm = 4200 at 74 inches
+           // irpm 4500 = at 104 inches
+           // irpm = 4700  at 111
+           // irpm = 4900 at 128 (second ball may need 100 more)
+           // launchad = 166 inches
+              //
+            if (distance < 60) {
+             irpm = 3000;
+           } else if ((distance >= 60) && (distance < 72)) {
+              irpm = 4000; 
+            } else if ((distance >= 72) && (distance < 84)) {
+              irpm = 4200; 
+            } else if ((distance >= 84) && (distance < 104)) {
+              irpm = 4400; 
+            } else if ((distance >= 104) && (distance < 116)) {
+              irpm = 4500; 
+            } else if ((distance >= 116) && (distance < 130)) {
+              irpm = 4700; 
+            } else if ((distance >= 130) && (distance < 145)) {
+              irpm = 4800; 
+            } else if ((distance >= 130) && (distance < 137)) {
+              irpm = 4900; 
+            } else if ((distance >= 137) && (distance < 145)) {
+              irpm = 5000; 
+            } else if ((distance >= 145) && (distance < 160)) {
+              irpm = 5300; 
+           } else if(distance >= 160) {
+              irpm = 5600;
+           }
             RobotContainer.shooter.setShooterRPM(irpm); 
             
            if (RobotContainer.shooter.getShooterRPM() >= irpm) {
@@ -220,7 +253,7 @@ public class Command_ai_loop extends CommandBase {
       
      } 
      else { // button not pressed
-        if (cstate == "SHOOT") { // RECOVERY STATE
+        if ((cstate == "SHOOT") || (cstate == "PREP")){ // RECOVERY STATE
            // Button no longer pressed but last state was shoot
            // Turn off Shooter and Feeders
            RobotContainer.shooter.setShooter(0);

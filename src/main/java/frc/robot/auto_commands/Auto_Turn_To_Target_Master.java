@@ -18,7 +18,7 @@ public class Auto_Turn_To_Target_Master extends SequentialCommandGroup {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 
-		// requires(Robot.drive);
+		addRequirements(RobotContainer.drive);
 
 	}
 
@@ -36,17 +36,14 @@ public class Auto_Turn_To_Target_Master extends SequentialCommandGroup {
 		// x = x + Robot.limelight.getOffsetRatio();
 		// SmartDashboard.putNumber("x ai loop", x);
 
-		RobotContainer.drive.turnRobotToAngleAuto(x);
+		RobotContainer.drive.turnRobotToAngle_New(x);
 
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	public boolean isFinished() {
 		if (Math.abs(x) <= 1) {
-			// Calc Distance away so we know zone 1 or zone 2
-
 			isuccess = isuccess + 1;
-
 
 			if (isuccess >= 4) {//5
 				return true;

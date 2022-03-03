@@ -26,6 +26,7 @@ public class Command_Elevator extends CommandBase {
     //RobotContainer.shooter.setShooter(-0.2);
     RobotContainer.intake.setIntake(0.5);;
     RobotContainer.elevator.setElevator(bspeed);
+    RobotContainer.shooter.setShooter(-0.3);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,7 +40,7 @@ public class Command_Elevator extends CommandBase {
   public void end(boolean interrupted) {
     RobotContainer.intake.setIntake(0);
     RobotContainer.elevator.stopElevator();
-    //RobotContainer.shooter.setShooter(0);
+    RobotContainer.shooter.setShooter(0);
   }
 
   // Returns true when the command should end.
