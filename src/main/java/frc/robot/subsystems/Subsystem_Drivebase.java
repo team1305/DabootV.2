@@ -42,7 +42,7 @@ public class Subsystem_Drivebase extends SubsystemBase {
 
   // Lower number means more delay, higher is less delay
   // 0.8 is a good number
-  public SlewRateLimiter rotationFilter = new SlewRateLimiter(0.9);
+  public SlewRateLimiter rotationFilter = new SlewRateLimiter(0.95); // 0.09
   public SlewRateLimiter accelerationFilter = new SlewRateLimiter(0.9);
 
     // grabs drive motor information from RobotMap
