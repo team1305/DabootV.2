@@ -4,14 +4,16 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.AutoCommands;
-import edu.wpi.first.wpilibj2.command.CommandGroupBase;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,7 +27,7 @@ public class Robot extends TimedRobot {
   Command autonomousCommand;
   SendableChooser<SequentialCommandGroup> autonomousModes;
 
-  private double Kp = -0.03f;
+  /*private double Kp = -0.03f;
   private double Ki = 0.012f; // 0.006
   private double Kf = 0.05f;  //feedforward - minimum command signal
   
@@ -36,7 +38,6 @@ public class Robot extends TimedRobot {
   private int izone, irpm;
   private boolean btarget;
   private double zone1threshold = 50; //  pixel width
-  public double distance;
   private int iloops = 0;
   
   private int isuccess = 0; 
@@ -44,7 +45,9 @@ public class Robot extends TimedRobot {
   private String cstate = "HUNT";
 
   private int caseMove = 0;
-
+*/
+  public double distance;
+  
   SendableChooser<Integer> autoChooser = new SendableChooser<>();
 
   private RobotContainer m_robotContainer;
@@ -58,24 +61,27 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    //RobotContainer.intake.intakeExtension(false);
    
    
-      autonomousModes = new SendableChooser<SequentialCommandGroup >();
-      autonomousModes.setDefaultOption("Drive Test", new AutoCommands(1));
-      autonomousModes.addOption("Drive Test", new AutoCommands(1));
-      autonomousModes.addOption("Rotate Test", new AutoCommands(2));
-      //autonomousModes.addOption("8 ball auto, opposite side steal, then generator", new AutoCommands(3));
-      //autonomousModes.addOption("3 ball auto, cross line then shoot", new AutoCommands(4));
-     
+    autonomousModes = new SendableChooser<SequentialCommandGroup >();
+    autonomousModes.setDefaultOption("2 Ball Auto", new AutoCommands(1));
+    autonomousModes.addOption("3 Ball Auto", new AutoCommands(2));
+    autonomousModes.addOption("4 Ball Auto", new AutoCommands(3));
+    autonomousModes.addOption("5 Ball Auto", new AutoCommands(4));
+    SmartDashboard.putData("AUTO Modes", autonomousModes);
   
-      SmartDashboard.putData("AUTO Modes", autonomousModes);
-  
+    // Set Default States
     RobotContainer.compressor.CompressorON();
-    RobotContainer.Led.setWhite();
+
+    if (DriverStation.getAlliance() == Alliance.Red) {
+      RobotContainer.Led.setRed();
+    } else {
+      RobotContainer.Led.setBlue();
+    }
 
     RobotContainer.drive.resetEncoder();
     RobotContainer.drive.gyroReset();
+    RobotContainer.Climb.resetEncoder();
 
     RobotContainer.Limelight.limelightOn();
 
