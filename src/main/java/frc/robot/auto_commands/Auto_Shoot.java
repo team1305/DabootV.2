@@ -2,7 +2,7 @@ package frc.robot.auto_commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Robot;
+//import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 /**
@@ -11,51 +11,79 @@ import frc.robot.RobotContainer;
 public class Auto_Shoot extends SequentialCommandGroup {
     double distance;
     double irpm;
-    int loopCounter;
-    int seconds;
+    double loopCounter;
+    double seconds;
 
-    public Auto_Shoot(int seconds) {
+    public Auto_Shoot(double seconds) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+        //addRequirements(RobotContainer.shooter);
+        //addRequirements(RobotContainer.elevator);
+        
         this.seconds = seconds;
 
         loopCounter = 0;
-
+        //if (RobotContainer.getdebug()) {
+        //   SmartDashboard.putString("AUTOSHOOT", "BASE INIT");
+       // }
     }
 
 public void initialize() {
-    withTimeout(5); // never shoot longer than 5 seconds
-    getDistanceAuto();
+    //withTimeout(5); // never shoot longer than 5 seconds
+    irpm = 0;
+    //if (RobotContainer.getdebug()) {
+    //  SmartDashboard.putString("AUTOSHOOT", "INITIALIZED");
+    //}
 }
 
     // Called repeatedly when this Command is scheduled to run
     public void execute() {
+        loopCounter = loopCounter + 1;
+        
+        if (irpm == 0) {
+            getDistanceAuto(); // Calls Shooter.getAutoRPM to get rpm
+        }
 
+        if (irpm > 0) {
+
+        
         // Fire up the Shooter
         RobotContainer.shooter.setShooterRPM(irpm);
-        SmartDashboard.putNumber("irpm_auto", irpm);
+        
+        if (RobotContainer.getdebug()) {
+    
+           SmartDashboard.putNumber("irpm_auto", irpm);
 
-        SmartDashboard.putNumber("shooterRPM", RobotContainer.shooter.getShooterRPM());
-        SmartDashboard.putNumber("thedistance", distance);
+           SmartDashboard.putNumber("shooterRPM", RobotContainer.shooter.getShooterRPM());
+           SmartDashboard.putNumber("thedistance", distance);
+        }
+
         double droppedIrpm = irpm - 50;
-
+        
         if (RobotContainer.shooter.getShooterRPM() >= droppedIrpm) {
             // We are at speed, Turn on feeders
             RobotContainer.elevator.setElevator(0.4);
 
             //RobotContainer.intake.setIntake(0.4);
-            loopCounter = loopCounter + 1;
-        }
+            } else {
+          RobotContainer.elevator.setElevator(0);
 
+        }
+       }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     public boolean isFinished() {
         
         if (loopCounter >= (seconds*50)) {
-            return true;
-
-        } else {
+          RobotContainer.shooter.stopShooter();
+          RobotContainer.elevator.setElevator(0);
+          if (RobotContainer.getdebug()) {
+     
+             SmartDashboard.putString("AUTOSHOOT", "FINISHED");
+          }
+          return true;
+         } else {
             return false;
         }
         /*if (isTimedOut()) {
@@ -82,36 +110,15 @@ public void initialize() {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-        end();
+        //end();
     }
 
     private void getDistanceAuto(){
      distance = RobotContainer.Limelight.getDistance();
+    
+     irpm = RobotContainer.shooter.getAutoRPM(distance);
 
-        if (distance < 60) {
-            irpm = 3000;
-          } else if ((distance >= 60) && (distance < 72)) {
-             irpm = 4000; 
-           } else if ((distance >= 72) && (distance < 84)) {
-             irpm = 4200; 
-           } else if ((distance >= 84) && (distance < 104)) {
-             irpm = 4400; 
-           } else if ((distance >= 104) && (distance < 116)) {
-             irpm = 4500; 
-           } else if ((distance >= 116) && (distance < 130)) {
-             irpm = 4700; 
-           } else if ((distance >= 130) && (distance < 145)) {
-             irpm = 4800; 
-           } else if ((distance >= 130) && (distance < 137)) {
-             irpm = 4900; 
-           } else if ((distance >= 137) && (distance < 145)) {
-             irpm = 5000; 
-           } else if ((distance >= 145) && (distance < 160)) {
-             irpm = 5300; 
-          } else if(distance >= 160) {
-             irpm = 5600;
-          }
-   
+       
           if (distance >= 150) {
             RobotContainer.shooter.ShooterUp();
           } else {
@@ -119,52 +126,5 @@ public void initialize() {
             
           }
 
-        /*distance = Robot.limelight.getDistance();
-
-        if (distance <= 200) { // 1205
-            Robot.shooter.hoodDown();
-            irpm = 4000;
-            Robot.shooter.setShooterPIDInfrontOfLine();
-
-        }
-
-        else if ((distance > 200) && (distance <= 300)) { // 120, 259
-            irpm = 4000;
-
-            Robot.shooter.hoodDown();
-            Robot.shooter.setShooterPIDInitiationLine();
-
-        }
-
-        else if ((distance > 300) && (distance <= 350)) {// 259, 450
-            irpm = 5000;
-            Robot.shooter.hoodUp();
-            Robot.shooter.setShooterPIDTrench();
-        }
-
-        else if ((distance > 350) && (distance <= 400)) {// 259, 450
-            irpm = 5500;
-            Robot.shooter.hoodUp();
-            Robot.shooter.setShooterPIDTrench();
-        }
-
-        else if ((distance > 400) && (distance <= 500)) {// 259, 450
-            irpm = 5750;
-            Robot.shooter.hoodUp();
-            Robot.shooter.setShooterPIDTrench();
-        }
-
-        else if ((distance > 500) && (distance <= 600)){//259, 450
-            irpm = 5750;
-            Robot.shooter.hoodDown();
-            Robot.shooter.setShooterPIDTrench();
-          }
-
-        else {
-            irpm = 6000;
-            Robot.shooter.hoodUp();
-            Robot.shooter.setShooterPIDTrenchBack();
-        }
-      */
     }
 }

@@ -1,8 +1,8 @@
 package frc.robot.auto_commands;
 
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 /**
@@ -18,15 +18,17 @@ public class Auto_Reset_Gyro extends SequentialCommandGroup {
 
     // Called just before this Command runs the first time
     public void initialize() {
-    	RobotContainer.drive.gyroReset();
+    //	RobotContainer.drive.gyroReset();
     }
 
     // Called repeatedly when this Command is scheduled to run
     public void execute() {
+        RobotContainer.drive.gyroReset();
+       // SmartDashboard.putNumber("AUTO RESET", RobotContainer.drive.gyroGetAngle());
         
     }
     public boolean isFinished() {
-           return false;
+           return true;
     }
     // Called once after isFinished returns true
     public void end() {

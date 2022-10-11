@@ -3,21 +3,22 @@ package frc.robot.auto_commands;
 
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-
 import frc.robot.RobotContainer;
 
 /**
  *
  */
-public class Auto_Intake_On extends SequentialCommandGroup {
+public class Auto_Intake_Elevator_Prep extends SequentialCommandGroup {
 
+	double duration;
+    double iloops;
 	
-	
-    public Auto_Intake_On() {
+    public Auto_Intake_Elevator_Prep(double duration) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+        this.duration = duration * 50;
     	
-         //addRequirements(RobotContainer.intake);
+         //addRequirements(RobotContainer.elevator);
          //addRequirements(RobotContainer.elevator);
          //addRequirements(RobotContainer.shooter);
              	
@@ -25,10 +26,11 @@ public class Auto_Intake_On extends SequentialCommandGroup {
 
     // Called just before this Command runs the first time
     public void initialize() {
-        RobotContainer.intake.intakeExtension(true);
-        RobotContainer.intake.setIntake(0.75); 
-        RobotContainer.elevator.setElevator(0.3);
-        RobotContainer.shooter.setShooter(-0.3);
+        //RobotContainer.intake.intakeExtension(true);
+        iloops = 0;
+
+        RobotContainer.elevator.setElevator(-0.3);
+
       
     }
 
@@ -36,13 +38,20 @@ public class Auto_Intake_On extends SequentialCommandGroup {
     public void execute() {
        //RobotContainer.intake.setIntake(0.5); 
        //RobotContainer.elevator.setElevator(0.4);
-       
+       iloops = iloops + 1;
 	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     public boolean isFinished() {
-    	return true;
+    	if (iloops >= duration) {
+            RobotContainer.elevator.setElevator(0);
+
+            return true;
+        } else {
+            return false;
+        }
+        
     }
 
     // Called once after isFinished returns true

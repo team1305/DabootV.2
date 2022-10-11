@@ -5,7 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
+//import frc.robot.RobotContainer;
 import frc.robot.subsystems.Subsystem_Drivebase;
 import frc.robot.subsystems.Subsystem_Elevator;
 import frc.robot.subsystems.Subsystem_Intake;
@@ -19,10 +19,10 @@ public class Command_AI_Shooter extends CommandBase {
   private final Subsystem_Intake intakeSub;
   private final Subsystem_Drivebase driveSub;
   private final Subsystem_Limelight limelightSub;
-  private double bspeed;
+  //private double bspeed;
   //private boolean shooterup;
-  private Integer aiLoop;
-  private boolean hasFoundtarget;
+  //private Integer aiLoop;
+  //private boolean hasFoundtarget;
   
   public Command_AI_Shooter(Subsystem_Shooter shooter, 
                             Subsystem_Elevator Elevator, 
@@ -36,7 +36,7 @@ public class Command_AI_Shooter extends CommandBase {
     intakeSub = intake;
     driveSub = drivebase;
     limelightSub = limelight;
-    this.bspeed = bspeed;
+    //this.bspeed = bspeed;
     //this.shooterup = shooterup;
     addRequirements(shooterSub);
     addRequirements(elevatorSub);

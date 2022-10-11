@@ -8,45 +8,36 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Subsystem_Climb;
 
-public class Command_Climb extends CommandBase {
-  /** Creates a new Command_Climb. */
+public class Command_Extend_Arm extends CommandBase {
+  /** Creates a new Command_Compressor_On. */
+
   private final Subsystem_Climb climbSub;
-  private double bspeed;
 
-  public Command_Climb(Subsystem_Climb Climb, double bspeed) {
+  public Command_Extend_Arm(Subsystem_Climb climb) {
     // Use addRequirements() here to declare subsystem dependencies.
-    climbSub = Climb;
+    climbSub = climb;
     addRequirements(climbSub);
-    this.bspeed = bspeed;
   }
-
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() { 
-    if(bspeed < 0) {
-      RobotContainer.Climb.HighGear();
-    } else {
-      RobotContainer.Climb.LowGear();
-    }
-    
-    RobotContainer.Climb.startClimb(bspeed);
-  
+  public void initialize() {
+    RobotContainer.Climb.ArmExtend();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+ 
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    RobotContainer.Climb.stopCLimb(0);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

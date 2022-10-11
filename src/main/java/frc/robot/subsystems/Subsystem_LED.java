@@ -10,8 +10,11 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 
 public class Subsystem_LED extends SubsystemBase {
@@ -19,7 +22,7 @@ public class Subsystem_LED extends SubsystemBase {
    * Creates a new ExampleSubsystem.
    */
   private final Spark mtled = Constants.mtLed;
-  
+  final static Solenoid slndLeds1 = Constants.slndLeds;
 
   private final double C_blue = 0.87; //FMS
   private final double C_green = 0.77; //FMS
@@ -55,6 +58,10 @@ public class Subsystem_LED extends SubsystemBase {
 */
   }
 
+  public void base_led(boolean bvalue) {
+    slndLeds1.set(bvalue);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -62,7 +69,9 @@ public class Subsystem_LED extends SubsystemBase {
 
   public void setBlue(){
     mtled.set(C_blue);
-    SmartDashboard.putString("LED Color", "Blue");
+    //if (RobotContainer.getdebug()) {
+    //   SmartDashboard.putString("LED Color", "Blue");
+    //}
     //SuppliedValueWidget colorWidget = Shuffleboard.getTab("SmartDashboard").addBoolean("FMSColor", () -> true);
     //colorWidget.withProperties(Map.of("colorWhenTrue", Color.blue));
 

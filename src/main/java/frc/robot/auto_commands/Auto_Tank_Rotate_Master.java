@@ -11,10 +11,8 @@
 package frc.robot.auto_commands;
 
 
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 
@@ -26,52 +24,74 @@ public class Auto_Tank_Rotate_Master extends SequentialCommandGroup {
 
     private double m_autorotateangle;
     private double m_leftpower;
-    private double m_rightpower;
-    private double m_timeout;
+    //private double m_rightpower;
+    //private double m_timeout;
     private double m_minspeed = 0.35;
     private double rampthreshold;
-    private double startingangle;
+    //private double startingangle;
 
-    public Auto_Tank_Rotate_Master(double AutoRotateAngle, double LeftPower, double RightPower, double TimeOut ) {
+    private double shuffleduration;
+    private boolean bshuffle;
+    private double iloops;
+
+    public Auto_Tank_Rotate_Master(double AutoRotateAngle, double LeftPower, boolean bshuffle, double shuffleduration ) {
 
         m_autorotateangle = AutoRotateAngle;
-        m_leftpower = LeftPower;
-        m_rightpower = RightPower;
-        m_timeout = TimeOut;
+        m_leftpower = Math.abs(LeftPower);
+        this.bshuffle = bshuffle;
+        this.shuffleduration = shuffleduration * 50;
+        //m_rightpower = Math.abs(RightPower);
+        //m_timeout = TimeOut;
 
+        iloops = 0;
         addRequirements(RobotContainer.drive);  
 
-        startingangle = RobotContainer.drive.gyroGetAngle();
+        //startingangle = RobotContainer.drive.gyroGetAngle();
  
 
     }
 
     // Called just before this Command runs the first time
     public void initialize() {
-        SmartDashboard.putString("Auto Rotate Init", "yes");
-        if ( Math.abs( m_autorotateangle - RobotContainer.drive.gyroGetAngle()) <= 45) {
-            rampthreshold = 35;
-        } else { // > 45 degrees}
-           rampthreshold = Math.abs( m_autorotateangle - RobotContainer.drive.gyroGetAngle()) / 2.5;
-    }
-
+        iloops = 0;
+        //if (RobotContainer.getdebug()) {
+        //SmartDashboard.putString("Auto Rotate Init", "yes");
+       // }
+        
+    
    // 	withTimeout(m_timeout);
 
     }
 
     // Called repeatedly when this Command is scheduled to run
     public void execute() {
+    iloops = iloops + 1;
+    // New Shuffle while driving code
+    if (bshuffle) {
+       if (iloops <= shuffleduration) {
+           RobotContainer.intake.setIntake(0.5); 
+           RobotContainer.elevator.setElevator(0.4); 
+           RobotContainer.shooter.setShooter(-0.3);
+        } else { // turn off shuffle
+           RobotContainer.intake.setIntake(0); 
+           RobotContainer.elevator.setElevator(0); 
+           RobotContainer.shooter.setShooter(0);
+        }
+    }
 
-        
 
+        if ( Math.abs( m_autorotateangle - RobotContainer.drive.gyroGetAngle()) <= 45) {
+            rampthreshold = 35;
+        } else { // > 45 degrees}
+           rampthreshold = Math.abs( m_autorotateangle - RobotContainer.drive.gyroGetAngle()) / 2.5;
+    }
 
-
-        if (RobotContainer.drive.gyroGetAngle() > m_autorotateangle) { // turn left
+        if (RobotContainer.drive.gyroGetAngle() > m_autorotateangle) { // turn left 
             if ( Math.abs(m_autorotateangle - RobotContainer.drive.gyroGetAngle()) <  rampthreshold ) {
-                RobotContainer.drive.tankdrive(m_minspeed, -m_minspeed);
+                RobotContainer.drive.tankdrive(-m_minspeed, m_minspeed);
              
             } else {
-                RobotContainer.drive.tankdrive(m_leftpower, -m_leftpower);
+                RobotContainer.drive.tankdrive(-m_leftpower, m_leftpower);
 
             }
         } else { // turn right
@@ -85,9 +105,6 @@ public class Auto_Tank_Rotate_Master extends SequentialCommandGroup {
 
         }
 
-        
-
-       	//SmartDashboard.putNumber("NavX getYaw", Robot.navX.getYaw());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -97,12 +114,15 @@ public class Auto_Tank_Rotate_Master extends SequentialCommandGroup {
 
     // Called once after isFinished returns true
     protected void end() {
-        RobotContainer.drive.DriveStop();
-        //Robot.drive.HighGear();
-        //Robot.drive.setLeftSide(0);
-        //Robot.drive.setRightSide(0);
-       // Robot.drive.driveshighgear();
-    //	SmartDashboard.putNumber("EndAngle", Robot.drive.gyroGetAngle());
+        RobotContainer.drive.tankdrive(0,0);
+
+
+        if (bshuffle) {
+            RobotContainer.intake.setIntake(0); 
+            RobotContainer.elevator.setElevator(0); 
+            RobotContainer.shooter.setShooter(0);
+        }
+     
     }
 
     // Called when another command which requires one or more of the same

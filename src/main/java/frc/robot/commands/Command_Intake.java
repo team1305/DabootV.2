@@ -7,20 +7,20 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Subsystem_Intake;
-import frc.robot.subsystems.Subsystem_LED;
+
 
 public class Command_Intake extends CommandBase {
   /** Creates a new Command_Intake. */
   private final Subsystem_Intake intakeSub;
-  private final Subsystem_LED ledSub;
+  //private final Subsystem_LED ledSub;
  
 
   
-  public Command_Intake(Subsystem_Intake intake, Subsystem_LED led) {
+  public Command_Intake(Subsystem_Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
     intakeSub = intake; 
-    ledSub = led;
-    addRequirements(intakeSub, led);
+    //ledSub = led;
+    addRequirements(intakeSub);
   }
 
   // Called when the command is initially scheduled.

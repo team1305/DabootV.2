@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 public class Subsystem_Intake extends SubsystemBase {
   /** Creates a new Subsystem_Intake. */
@@ -20,6 +21,7 @@ public class Subsystem_Intake extends SubsystemBase {
 
 
 private final static Solenoid slndIntake1 = Constants.slndIntake;
+
 //private final static Solenoid slndIntake2 = Constants.slndIntake2;
   public boolean bintakeOn;
 
@@ -29,8 +31,9 @@ private final static Solenoid slndIntake1 = Constants.slndIntake;
    mtIntake.setNeutralMode(NeutralMode.Brake);
 
    mtIntake.configStatorCurrentLimit(Constants.currentLimitConfig, 40);
-
-   SmartDashboard.putBoolean("Intake Solenoid Set Value", false);
+  /* if (RobotContainer.getdebug()) {
+      SmartDashboard.putBoolean("Intake Solenoid Set Value", false);
+   }*/
    bintakeOn = false;
    //intakeExtension(false);
 
@@ -65,12 +68,16 @@ private final static Solenoid slndIntake1 = Constants.slndIntake;
     if (extension){
        slndIntake1.set(true);
        bintakeOn = true;
-       SmartDashboard.putBoolean("Intake Solenoid Set Value", true);
-       SmartDashboard.putString("Intake Audit", "intakeextension");
+       /*if (RobotContainer.getdebug()) {
+          SmartDashboard.putBoolean("Intake Solenoid Set Value", true);
+          SmartDashboard.putString("Intake Audit", "intakeextension");
+       }*/
     } else {
       slndIntake1.set(false);
       bintakeOn = false;
-      SmartDashboard.putBoolean("Intake Solenoid Set Value", false);  
+      /*if (RobotContainer.getdebug()) {
+        SmartDashboard.putBoolean("Intake Solenoid Set Value", false);  
+      }*/
     }
     
   }
@@ -89,11 +96,15 @@ private final static Solenoid slndIntake1 = Constants.slndIntake;
 
   public void Intake_Toggle(){
     if(bintakeOn){
-      SmartDashboard.putString("Intake Toggle", "Off"); 
+      //if (RobotContainer.getdebug()) {
+      //  SmartDashboard.putString("Intake Toggle", "Off"); 
+      //}
       intakeExtension(false);
        setIntake(0);
     }else{
-      SmartDashboard.putString("Intake Toggle", "On");
+      //if (RobotContainer.getdebug()) {
+      //  SmartDashboard.putString("Intake Toggle", "On");
+      //}
       intakeExtension(true);
       setIntake(0.5);
     }

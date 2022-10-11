@@ -24,14 +24,14 @@ public class Subsystem_Limelight extends SubsystemBase {
 
   private double[] defaultValue = {0.1,0.1,0.1,0.1};
   private int topRight = 0; //NEEDS TO BE CHANGED TO ACTUAL TOP LEFT VALUE
-  private double left_command;
+  /*private double left_command;
   private double right_command;
   private double x, thor; //Limelight Values
   private double Kp = Constants.LIMELIGHT_KP;
   private double Ki = Constants.LIMELIGHT_KI; // 0.006
   private double Kd = 0; // 0.006
   private double Kf = Constants.LIMELIGHT_KF;  //feedforward - minimum command signal
-
+*/
   double height_of_limelight = 26.5; //Inches
   double height_of_target = 98; //Inches
   double angle_of_limelight_degrees = 25; // Degrees
@@ -147,21 +147,16 @@ public class Subsystem_Limelight extends SubsystemBase {
 
 
   public boolean is_Target(){
-    /*SmartDashboard.putNumber("AI_TA", table.getEntry("ta").getDouble(2) );
-    if (table.getEntry("ta").getDouble(0) > 0.17) {
-      SmartDashboard.putString("AI_HAS_TARGET", "YES" );
-  
-      return true;
-   } else {
-    SmartDashboard.putString("AI_HAS_TARGET", "NO" );
-    return false;
-   }*/
     if (table.getEntry("tv").getDouble(0) == 1) {
-      SmartDashboard.putString("AI_HAS_TARGET", "YES" );
+      //if (RobotContainer.getdebug()) {
+      //   SmartDashboard.putString("AI_HAS_TARGET", "YES" );
+     // }
   
       return true;
    } else {
-    SmartDashboard.putString("AI_HAS_TARGET", "NO" );
+    //if (RobotContainer.getdebug()) {
+    //  SmartDashboard.putString("AI_HAS_TARGET", "NO" );
+    //}
     return false;
    }
   }
@@ -209,8 +204,10 @@ public class Subsystem_Limelight extends SubsystemBase {
 
     if (is_Target()){
       double tanValue = Math.tan((angle_of_limelight + get_Ty())*(Math.PI/180));
-      SmartDashboard.putNumber("Tan Value", tanValue);
-      SmartDashboard.putNumber("The angle", angle_of_limelight + get_Ty());
+      //if (RobotContainer.getdebug()) {
+      //   SmartDashboard.putNumber("Tan Value", tanValue);
+      //   SmartDashboard.putNumber("The angle", angle_of_limelight + get_Ty());
+     // }
       distance = (height_of_target - height_of_limelight) / Math.tan((angle_of_limelight + get_Ty())*(Math.PI/180));
       distance = Math.abs(distance);
     }
@@ -248,6 +245,10 @@ public class Subsystem_Limelight extends SubsystemBase {
 
   public void limelightOn(){
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+  }
+
+  public void limelightstream(int ivalue){ // 0 - standard double stream, 1 - PiP secondary small, 2 - PiP secondary big
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(ivalue);
   }
 
   public boolean isLimelightOn(){

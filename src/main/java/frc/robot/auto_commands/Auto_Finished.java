@@ -1,12 +1,10 @@
 package frc.robot.auto_commands;
 
-import java.text.SimpleDateFormat;
+
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 /**
@@ -23,11 +21,16 @@ public class Auto_Finished extends SequentialCommandGroup {
 
     // Called just before this Command runs the first time
     public void initialize() {
+        RobotContainer.drive.DriveStop();
+        RobotContainer.intake.setIntake(0);
+        RobotContainer.shooter.setShooter(0);
+        RobotContainer.elevator.setElevator(0);
+        RobotContainer.shooter.ShooterDown();
     }
 
     // Called repeatedly when this Command is scheduled to run
     public void execute() {
-    	RobotContainer.drive.DriveStop();
+    	//RobotContainer.drive.DriveStop();
     //	Robot.elevator.Stage1Stop();
     //	Robot.intake.intakeOff();
     //	Robot.arm.ArmUp();
@@ -36,8 +39,8 @@ public class Auto_Finished extends SequentialCommandGroup {
     //	Robot.rgbledCAN.LEDred();
     	
    	
-    	SmartDashboard.putNumber("Auto Finished", DriverStation.getInstance().getMatchTime() );
-    	System.out.println("Auto Finished: " + DriverStation.getInstance().getMatchTime());
+    	SmartDashboard.putNumber("Auto Finished", DriverStation.getMatchTime() );
+    	System.out.println("Auto Finished: " + DriverStation.getMatchTime());
     }
 
     // Make this return true when this Command no longer needs to run execute()

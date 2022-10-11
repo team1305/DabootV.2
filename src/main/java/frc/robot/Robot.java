@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -13,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.AutoCommands;
+
 
 
 /**
@@ -27,7 +30,7 @@ public class Robot extends TimedRobot {
   Command autonomousCommand;
   SendableChooser<SequentialCommandGroup> autonomousModes;
 
-  /*private double Kp = -0.03f;
+  private double Kp = -0.03f;
   private double Ki = 0.012f; // 0.006
   private double Kf = 0.05f;  //feedforward - minimum command signal
   
@@ -45,12 +48,18 @@ public class Robot extends TimedRobot {
   private String cstate = "HUNT";
 
   private int caseMove = 0;
-*/
-  public double distance;
   
-  SendableChooser<Integer> autoChooser = new SendableChooser<>();
 
+  public double distance;
+
+  public static UsbCamera camera;
+
+ 
+
+  SendableChooser<Integer> autoChooser = new SendableChooser<>();
   private RobotContainer m_robotContainer;
+
+  
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -61,17 +70,20 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-   
+
+    
    
     autonomousModes = new SendableChooser<SequentialCommandGroup >();
-    autonomousModes.setDefaultOption("2 Ball Auto", new AutoCommands(1));
-    autonomousModes.addOption("3 Ball Auto", new AutoCommands(2));
-    autonomousModes.addOption("4 Ball Auto", new AutoCommands(3));
-    autonomousModes.addOption("5 Ball Auto", new AutoCommands(4));
+    autonomousModes.setDefaultOption("4 Ball Auto", new AutoCommands(2));
+    autonomousModes.addOption("2 Ball Auto", new AutoCommands(1));
+    autonomousModes.addOption("3 Ball Auto", new AutoCommands(3));
+    //autonomousModes.addOption("5 Ball Auto", new AutoCommands(4));
     SmartDashboard.putData("AUTO Modes", autonomousModes);
   
     // Set Default States
     RobotContainer.compressor.CompressorON();
+
+    RobotContainer.Climb.ArmRetract();
 
     if (DriverStation.getAlliance() == Alliance.Red) {
       RobotContainer.Led.setRed();
@@ -85,6 +97,19 @@ public class Robot extends TimedRobot {
 
     RobotContainer.Limelight.limelightOn();
 
+    RobotContainer.Led.base_led(true);
+      
+    //starts camera stream if camera is available
+    try {
+      camera = CameraServer.startAutomaticCapture();
+    }
+    catch(Exception ex) {
+
+      System.out.println("ERROR: setting camera: " + ex.getMessage()) ;
+    } 
+
+    RobotContainer.Limelight.limelightstream(2);
+    
     
   }
 

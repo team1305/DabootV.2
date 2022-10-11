@@ -58,13 +58,17 @@ public final class Constants {
 // 6 - Intake
 
 	//solenoids for Intake   
-	 public static Solenoid slndIntake =  new Solenoid(PneumaticsModuleType.CTREPCM, 6); //set the solenoid to right ID, and add the moduler type
+	 public static Solenoid slndIntake =  new Solenoid(PneumaticsModuleType.CTREPCM, 6); //6 set the solenoid to right ID, and add the moduler type
 	
 	//solenoids for Shooter
 	public static Solenoid slndShooter =  new Solenoid(PneumaticsModuleType.CTREPCM, 1); //set the solenoid to right ID, and add the moduler type
-	//solenoids for Clim
+	//solenoids for Climb
 	public static Solenoid slndClimb =  new Solenoid(PneumaticsModuleType.CTREPCM, 0); //set the solenoid to right ID, and add the moduler type
+	//solenoids for Climb arm   
+	public static Solenoid slndArm =  new Solenoid(PneumaticsModuleType.CTREPCM, 7); // set the solenoid to right ID, and add the moduler type
 
+	//solenoids for Blue LEDs
+	public static Solenoid slndLeds =  new Solenoid(PneumaticsModuleType.CTREPCM, 3); //set the solenoid to right ID, and add the moduler type
 	//declares compressor port
 	public static Compressor cmpRobotCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
 	 	

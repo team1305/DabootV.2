@@ -12,12 +12,14 @@ public class Command_Shooter extends CommandBase {
   /** Creates a new Command_Intake. */
   private final Subsystem_Shooter shooterSub;
   private Integer irpm;
+  private boolean useelevator;
   //private boolean shooterup;
   //, boolean shooterup
-  public Command_Shooter(Subsystem_Shooter shooter, Integer irpm) {
+  public Command_Shooter(Subsystem_Shooter shooter, Integer irpm, boolean buseelevator) {
     // Use addRequirements() here to declare subsystem dependencies.
     shooterSub = shooter;
     this.irpm = irpm;
+    this.useelevator = buseelevator;
     //this.shooterup = shooterup;
     addRequirements(shooterSub);
   }
@@ -37,12 +39,19 @@ public class Command_Shooter extends CommandBase {
     */
     RobotContainer.shooter.setShooterRPM(irpm);
 
+    
+
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
+    if (RobotContainer.shooter.getShooterRPM() >= irpm) {
+      if (useelevator) {
+         RobotContainer.elevator.setElevator(0.4);
+      }
+   }
   }
 
   // Called once the command ends or is interrupted.
@@ -51,7 +60,7 @@ public class Command_Shooter extends CommandBase {
 
     //RobotContainer.shooter.setShooterRPM(0);
     RobotContainer.shooter.stopShooter();;
-
+    RobotContainer.elevator.setElevator(0);
   }
 
   // Returns true when the command should end.
