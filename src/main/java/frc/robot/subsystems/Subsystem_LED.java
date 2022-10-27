@@ -33,6 +33,7 @@ public class Subsystem_LED extends SubsystemBase {
   private final double C_violet = 0.91; //Violet
   private final double C_black = 0.99; //Off
   private final double C_Ocean_Palette = -0.41; //Off
+  private final double c_Rainbow_Palette = -0.99;
 
   /******* color assignments ********
   Blue = blue ball
@@ -92,6 +93,9 @@ public class Subsystem_LED extends SubsystemBase {
     //theArray[3] = false;
     //theArray[4] = false;
     //SmartDashboard.putBooleanArray("FMS Values", theArray);
+  }
+  public void setRainbow(){
+    mtled.set(c_Rainbow_Palette);
   }
 
   public void setGreen(){

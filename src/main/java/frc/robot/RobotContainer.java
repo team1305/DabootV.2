@@ -86,7 +86,7 @@ public final static Subsystem_Drivebase drive = new Subsystem_Drivebase();
     new JoystickButton(SECONDARY, Constants.LEFT_BUMPER).whileHeld(new Command_Intake(intake));
     new JoystickButton(PRIMARY, Constants.B_BUTTON).whileHeld(new Command_Elevator(elevator, 0.4));
     new JoystickButton(PRIMARY, Constants.X_BUTTON).whileHeld(new Command_Elevator(elevator, -0.2));
-    new JoystickButton(PRIMARY, Constants.Y_BUTTON).whileHeld(new Command_Shooter(shooter, 5000, true));
+    new JoystickButton(PRIMARY, Constants.Y_BUTTON).whileHeld(new Command_Shooter(shooter, 2000, true));
     new JoystickButton(SECONDARY, Constants.START).whenPressed(new Command_Extend_Arm(Climb));
     new JoystickButton(SECONDARY, Constants.BACK).whenPressed(new Command_Retract_Arm(Climb));
     // new JoystickButton(SECONDARY, Constants.X_BUTTON).whileHeld(new Command_Shooter(shooter, 0.7, false));
